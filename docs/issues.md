@@ -12,13 +12,13 @@ This document catalogs potential bugs and code quality issues identified during 
 **Impact**: 🔴 High - Server crashes on startup
 
 **Problem**:  
-`process.env.REDIS_GENAI_PUBSUB_SENTINEL_URI!` is dereferenced and passed to `new URL()` with no guard. When cache is enabled (`IS_CACHE_ENABLED=true`) but the Redis URL environment variable is missing, the constructor throws `TypeError: Invalid URL` before any logging can explain the failure. This crashes the server on startup.
+`process.env.REDIS_AiImage_PUBSUB_SENTINEL_URI!` is dereferenced and passed to `new URL()` with no guard. When cache is enabled (`IS_CACHE_ENABLED=true`) but the Redis URL environment variable is missing, the constructor throws `TypeError: Invalid URL` before any logging can explain the failure. This crashes the server on startup.
 
 **Suggested Fix**:
 ```typescript
-const redisUrl = process.env.REDIS_GENAI_PUBSUB_SENTINEL_URI;
+const redisUrl = process.env.REDIS_AiImage_PUBSUB_SENTINEL_URI;
 if (!redisUrl) {
-  throw new Error('REDIS_GENAI_PUBSUB_SENTINEL_URI is required when cache is enabled');
+  throw new Error('REDIS_AiImage_PUBSUB_SENTINEL_URI is required when cache is enabled');
 }
 const url = new URL(redisUrl);
 ```

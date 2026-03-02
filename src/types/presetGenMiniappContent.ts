@@ -40,7 +40,7 @@ export interface PreviewsLayout {
 
 export interface Drive {
   toolId: 'gen-ai';
-  folderName: 'GenAI';
+  folderName: 'AiImage';
 }
 
 export interface InputItem {

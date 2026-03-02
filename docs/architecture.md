@@ -70,7 +70,7 @@ Structured metadata is generated centrally: `PageJsonLinkedData` composes breadc
 ## External Integrations & Security
 - **Cloudflare Access** guards Strapi APIs via the `CF-Access-Client-*` headers derived from `constants/globals.ts`.
 - **Uploads** go through `UPLOAD_BASE_URL`, allowing client components (e.g., `UploadArea`) to hit upload endpoints directly from the browser.
-- **Redis** credentials are drawn from `REDIS_GENAI_PUBSUB_SENTINEL_URI`, which supports direct or Sentinel clusters; optional channels configure which publishing topics trigger revalidation (`lib/redis/constants`).
+- **Redis** credentials are drawn from `REDIS_AiImage_PUBSUB_SENTINEL_URI`, which supports direct or Sentinel clusters; optional channels configure which publishing topics trigger revalidation (`lib/redis/constants`).
 - **Secrets management** depends on environment-layer `.env*` files, mirrored for multiple deployment targets (development, preproduction, production).
 
 ## Extensibility Guidelines

@@ -5,9 +5,9 @@ const getPreviewsLayout = (previewMedia: PreviewMedia): PreviewsLayout => {
   return {
     sidebar: {
       header: {
-        title: 'GenAI Studio',
+        title: 'AiImage Studio',
         hasCloseIcon: true,
-        appIconName: 'IconGenAI',
+        appIconName: 'IconAiImage',
         previewMedia,
       },
       footer: {
@@ -32,7 +32,7 @@ export const getPresetGenMiniappContent = ({ webhookId, previewMedia, inputs, re
   inputs,
   drive: {
     toolId: 'gen-ai',
-    folderName: 'GenAI',
+    folderName: 'AiImage',
   },
   layout: getPreviewsLayout(previewMedia),
 });

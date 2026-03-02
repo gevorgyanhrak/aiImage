@@ -5,7 +5,7 @@ import { Flex } from '@radix-ui/themes';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/store';
 import postJson from '@/utils/postJson';
-import { PICSART_BASE_URL } from '@/constants/globals';
+import { AI_IMAGE_BASE_URL } from '@/constants/globals';
 import redirectToExternalDomain from '@/utils/redirectToExternalDomain';
 import checkIsMobile from '@/utils/checkIsMobile';
 import { MediaType } from '@/types/media';
@@ -99,7 +99,7 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
       }
 
       if (redirectionUrl.includes('ai-try-on')) {
-        const finalRedirectionUrl = `${PICSART_BASE_URL}${redirectionUrl}${uploadedMedia[0].sourceUrl}`;
+        const finalRedirectionUrl = `${AI_IMAGE_BASE_URL}${redirectionUrl}${uploadedMedia[0].sourceUrl}`;
         redirectToExternalDomain({ href: finalRedirectionUrl, target });
         return;
       }
@@ -142,7 +142,7 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
         return acc;
       }, '');
 
-      const finalRedirectionUrl = `${PICSART_BASE_URL}${redirectionUrl.replace(/\s+/g, '')}${result}${adParams}`;
+      const finalRedirectionUrl = `${AI_IMAGE_BASE_URL}${redirectionUrl.replace(/\s+/g, '')}${result}${adParams}`;
 
       sendFacebookPixelEvent(FacebookPixelEvent.Lead, { content_name: media.title });
       redirectToExternalDomain({ href: finalRedirectionUrl, target });

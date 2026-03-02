@@ -1,5 +1,5 @@
 export const UPLOAD_BASE_URL = import.meta.env.VITE_UPLOAD_URL || 'http://localhost:3000/api/mock/upload';
-export const PICSART_BASE_URL = import.meta.env.VITE_PICSART_BASE_URL || 'http://localhost:3000';
+export const AI_IMAGE_BASE_URL = import.meta.env.VITE_AI_IMAGE_BASE_URL || 'http://localhost:3000';
 
 export const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 export const TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
