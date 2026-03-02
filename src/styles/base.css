@@ -115,4 +115,58 @@ html {
     -webkit-background-clip: text;
     background-clip: text;
   }
+
+  /* Neon glow text effect */
+  .neon-text {
+    color: var(--neon-pink);
+    text-shadow: var(--neon-glow);
+  }
+
+  .neon-text-subtle {
+    text-shadow: 0 0 10px rgba(244, 64, 151, 0.3);
+  }
+
+  /* Neon glow line — used as header bottom border */
+  .glow-line {
+    position: relative;
+  }
+  .glow-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--neon-pink) 20%,
+      var(--neon-pink-light) 50%,
+      var(--neon-pink) 80%,
+      transparent 100%
+    );
+    opacity: 0.6;
+    box-shadow: 0 0 8px rgba(244, 64, 151, 0.4), 0 0 20px rgba(244, 64, 151, 0.15);
+  }
+
+  /* Neon underline for tabs */
+  .neon-underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-pink-light));
+    border-radius: 1px;
+    box-shadow: 0 0 6px rgba(244, 64, 151, 0.5), 0 0 15px rgba(244, 64, 151, 0.2);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Pulse animation for logo glow */
+  @keyframes neon-pulse {
+    0%, 100% { text-shadow: var(--neon-glow); }
+    50% { text-shadow: var(--neon-glow-strong); }
+  }
+
+  .neon-pulse {
+    animation: neon-pulse 3s ease-in-out infinite;
+  }
 }

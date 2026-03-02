@@ -1,20 +1,28 @@
 import { Link } from 'react-router';
 import { TEST_IDS } from './constants/testIds';
-import SectionText from '../SectionText';
 import { PULSE_NAMES } from '@/constants/pulseNames';
-
-const headerLogo = '/images/hrakai-logo.svg';
 
 const Header = () => {
   return (
-    <header className="md:sticky top-0 md:z-50 md:bg-background/90 md:backdrop-blur-md" data-testid={TEST_IDS.CONTAINER} data-pulse-section="header" data-pulse-group="header">
-      <div className="flex gap-3 items-center justify h-14 px-3 md:px-6 py-2">
-        <Link to="/" data-testid={TEST_IDS.LOGO_LINK} data-pulse-name={PULSE_NAMES.GEN_AI_LOGO} className="flex gap-2 items-center">
-          <img src={headerLogo} height={32} width={32} alt="logo" className="w-8 h-8" />
-          <div className="flex flex-col items-between justify-between">
-            <SectionText as="h1" text="hrakAi Studio" className="text-base font-bold tracking-tight text-white leading-4" />
-            <SectionText as="h2" text="AI Tools" className="text-xs font-normal text-white leading-4" />
-          </div>
+    <header
+      className="sticky top-0 z-50 bg-[var(--header-bg)] glow-line"
+      data-testid={TEST_IDS.CONTAINER}
+      data-pulse-section="header"
+      data-pulse-group="header"
+    >
+      <div className="flex items-center h-16 px-4 md:px-6">
+        <Link
+          to="/"
+          data-testid={TEST_IDS.LOGO_LINK}
+          data-pulse-name={PULSE_NAMES.GEN_AI_LOGO}
+          className="flex items-baseline gap-3 group"
+        >
+          <span className="text-lg font-bold tracking-[0.2em] uppercase neon-text neon-pulse">
+            hrakAi
+          </span>
+          <span className="text-[10px] font-medium tracking-[0.35em] uppercase text-[#555] group-hover:text-[#888] transition-colors duration-300">
+            studio
+          </span>
         </Link>
       </div>
     </header>
