@@ -15,7 +15,7 @@ const TermsNotice = ({ linkHref = DEFAULT_LINK_HREF }: TermsNoticeProps) => {
         <Text as="p" size="2" className="!font-hrakai font-medium text-white max-w-[250px] sm:max-w-[280px]" data-testid={TEST_IDS.PRIMARY_TEXT}>
           By continuing, you agree to our{' '}
           <a target="_blank" className="font-hrakai font-medium underline md:no-underline text-primary" href={linkHref} data-testid={TEST_IDS.PRIMARY_LINK} rel="noreferrer">
-            Gen AI ToU
+            AiImage
           </a>
         </Text>
       </Flex>
