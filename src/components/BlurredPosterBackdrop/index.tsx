@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { memo } from 'react';
 
@@ -9,10 +8,10 @@ type BlurredBackdropProps = {
   sizes?: string;
 };
 
-const BlurredBackdrop = ({ src, className, alt, sizes }: BlurredBackdropProps) => {
+const BlurredBackdrop = ({ src, className, alt }: BlurredBackdropProps) => {
   return (
     <div className={cn('absolute inset-0 overflow-hidden rounded-lg', className)} aria-hidden="true">
-      <Image src={src} alt={alt ?? ''} fill loading="eager" sizes={sizes} draggable={false} className="scale-110 blur-2xl" />
+      <img src={src} alt={alt ?? ''} loading="eager" draggable={false} className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl" />
     </div>
   );
 };

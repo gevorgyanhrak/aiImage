@@ -1,21 +1,18 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import nextConfig from 'eslint-config-next';
 import prettierPlugin from 'eslint-plugin-prettier';
 import tsParser from '@typescript-eslint/parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const ignores = ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'public/**'];
-
+const ignores = ['node_modules/**', 'dist/**', 'build/**', 'public/**'];
 
 const config = [
   {
     ignores,
   },
-  ...nextConfig,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {

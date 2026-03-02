@@ -1,5 +1,3 @@
-'use client';
-
 import useResetStore from '@/store/resetStore';
 import useScrollRestoration from '@/hooks/useScrollRestoration';
 

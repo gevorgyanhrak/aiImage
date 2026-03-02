@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router';
 import { TEST_IDS } from './constants/testIds';
 import { Button } from '../ui/button';
 
@@ -9,7 +9,7 @@ type CardLinkProps = {
 
 const CardLink = ({ href, title }: CardLinkProps) => {
   return (
-    <Link prefetch={false} href={href} target="_blank" className="flex items-center" aria-label={`Visit ${title} now`} scroll={false} data-testid={TEST_IDS.CARD_LINK}>
+    <Link to={href} className="flex items-center" aria-label={`Visit ${title} now`} data-testid={TEST_IDS.CARD_LINK}>
       <Button variant="link" className="p-0">
         <span>Visit now</span>
         <span>→</span>

@@ -1,8 +1,8 @@
-import type { ImageProps } from 'next/image';
-
-type IImageWithFallback = Omit<ImageProps, 'src' | 'alt'> & {
+type IImageWithFallback = React.ImgHTMLAttributes<HTMLImageElement> & {
   src: string;
   alt: string;
+  fill?: boolean;
+  preload?: boolean;
   fallbackSrc?: string;
   blurImageDataUrl?: string;
 };

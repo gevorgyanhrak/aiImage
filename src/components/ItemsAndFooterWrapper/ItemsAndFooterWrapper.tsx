@@ -1,5 +1,3 @@
-'use client';
-
 import useFocusOnNextInput from '@/hooks/useFocusOnNextInput';
 import type { LandingButton, LandingTextItem, LandingUploadItem, Transformation } from '@/types/landing';
 import type { SectionItemWithFlow } from '@/types/sectionItem';

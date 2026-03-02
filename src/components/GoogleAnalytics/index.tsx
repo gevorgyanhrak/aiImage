@@ -1,17 +1,11 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router';
 
-const GoogleAnalytics = dynamic(() => import('@next/third-parties/google').then(mod => mod.GoogleAnalytics), { ssr: false });
-
-// Delay loading Google Analytics after the LCP
 const DELAY = 2500;
 const GA_MEASUREMENT_ID = 'GTM-PQ45W6W';
 
 const GoogleAnalyticsWrapper = () => {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -24,9 +18,32 @@ const GoogleAnalyticsWrapper = () => {
     return () => clearTimeout(timerId);
   }, [hydrated, pathname]);
 
-  if (!hydrated) return null;
+  useEffect(() => {
+    if (!hydrated) return;
 
-  return <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />;
+    // Inject gtag.js script
+    const script = document.createElement('script');
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Inject gtag config
+    const configScript = document.createElement('script');
+    configScript.textContent = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA_MEASUREMENT_ID}');
+    `;
+    document.head.appendChild(configScript);
+
+    return () => {
+      document.head.removeChild(script);
+      document.head.removeChild(configScript);
+    };
+  }, [hydrated]);
+
+  return null;
 };
 
 export default GoogleAnalyticsWrapper;

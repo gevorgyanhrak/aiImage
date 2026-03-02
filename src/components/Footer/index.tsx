@@ -1,14 +1,12 @@
-import Link from 'next/link';
-
 const footerLinks = [
-  { label: 'Terms of Use', href: '#', target: '__blank' },
-  { label: 'Privacy Policy', href: '#', target: '__blank' },
-  { label: 'Do Not Sell', href: '#', target: '__blank' },
-  { label: 'Internet-Based Advertising', href: '#', target: '__blank' },
-  { label: 'Community Guidelines', href: '#', target: '__blank' },
-  { label: 'DMCA', href: '#', target: '__blank' },
-  { label: 'Security Policy', href: '#', target: '__blank' },
-  { label: 'Accessibility', href: '#', target: '__blank' },
+  { label: 'Terms of Use', href: '#', target: '_blank' },
+  { label: 'Privacy Policy', href: '#', target: '_blank' },
+  { label: 'Do Not Sell', href: '#', target: '_blank' },
+  { label: 'Internet-Based Advertising', href: '#', target: '_blank' },
+  { label: 'Community Guidelines', href: '#', target: '_blank' },
+  { label: 'DMCA', href: '#', target: '_blank' },
+  { label: 'Security Policy', href: '#', target: '_blank' },
+  { label: 'Accessibility', href: '#', target: '_blank' },
 ];
 
 const Footer = () => {
@@ -19,14 +17,14 @@ const Footer = () => {
           <ul className="flex flex-wrap justify-center gap-6">
             {footerLinks.map(({ label, href, target }) => (
               <li key={label}>
-                <Link
+                <a
                   target={target}
                   className="inline-flex h-4 justify-center text-center font-hrakai text-sm font-medium leading-4 tracking-normal text-footer-text transition-colors hover:text-foreground"
                   href={href}
                   data-pulse-name={label}
                 >
                   {label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

@@ -1,11 +1,12 @@
 import { EventType } from '@/types/analytics';
 
 const sendAnalyticsEvent = (eventName: string, eventType: EventType = EventType.custom_event, data?: object) => {
-  if (!window.dataLayer) return;
+  const dataLayer = (window as unknown as { dataLayer?: Array<Record<string, unknown>> }).dataLayer;
+  if (!dataLayer) return;
 
   const id = crypto.randomUUID();
 
-  window.dataLayer.push({
+  dataLayer.push({
     event: eventType,
     data: {
       action: eventName,

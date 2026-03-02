@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState, type ReactNode } from 'react';
 import { remoteSettings } from '@/configs/remoteSettings';
 import { PulseProvider } from '@pulse/react';

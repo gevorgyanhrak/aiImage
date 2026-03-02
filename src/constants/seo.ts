@@ -1,5 +1,3 @@
-import type { Metadata } from 'next/types';
-
 export const SITE_NAME = 'hrakAi Studio';
 
 export const AUTHORS = [{ name: SITE_NAME }];
@@ -16,7 +14,7 @@ const logos = {
   appLogo: '/images/app-logo.svg',
 };
 
-export const mainMetadata: Metadata = {
+export const mainMetadata = {
   icons: {
     icon: [
       {

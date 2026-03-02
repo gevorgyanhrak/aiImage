@@ -1,6 +1,3 @@
-'use client';
-
-import Image from 'next/image';
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { TEST_IDS } from '../constants/testIds';
@@ -20,13 +17,12 @@ const PreviewView = ({ url, onClear }: IPreviewView) => {
   return (
     <div className="relative w-full flex items-center justify-center" data-testid={TEST_IDS.DONE}>
       <div className="relative overflow-hidden" style={{ height: PREVIEW_HEIGHT, width: wrapWidth }} data-testid={TEST_IDS.PREVIEW_IMAGE}>
-        <Image
+        <img
           src={url}
           alt="uploaded"
-          fill
-          sizes={`${wrapWidth}px`}
-          className="object-contain [image-orientation:from-image]"
-          onLoadingComplete={({ naturalWidth, naturalHeight }) => {
+          className="absolute inset-0 w-full h-full object-contain [image-orientation:from-image]"
+          onLoad={e => {
+            const { naturalWidth, naturalHeight } = e.currentTarget;
             if (naturalWidth && naturalHeight) {
               const ratio = naturalWidth / naturalHeight;
               const computed = Math.round(PREVIEW_HEIGHT * ratio);

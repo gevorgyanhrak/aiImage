@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router';
 import type { BreadcrumbListSegment } from '@/types/breadcrumb';
 import { TEST_IDS } from './constants/testIds';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
@@ -32,7 +32,7 @@ const BreadCrump = ({ segments, className }: BreadCrumpProps) => {
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild className="flex text-white items-center font-semibold hover:text-primary" data-testid={TEST_IDS.LINK}>
-                    <Link href={href}>{content}</Link>
+                    <Link to={href}>{content}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>

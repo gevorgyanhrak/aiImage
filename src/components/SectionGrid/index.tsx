@@ -1,7 +1,5 @@
-'use client';
-
 import { useRef, useMemo, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import useMasonryColumns from '@/hooks/useMasonryColumns';
@@ -64,7 +62,7 @@ const SectionGrid = ({ title, items, id, priority, columnsCount = DEFAULT_COLUMN
           {title && (
             <Link
               className={cn('inline-flex w-fit uppercase text-gradient-valentine text-2xl font-semibold leading-7 transition-opacity hover:opacity-80', description ? 'mb-2' : 'mb-8')}
-              href={slug ?? '/'}
+              to={slug ?? '/'}
               id={headingId}
               data-testid={`${title}-${TEST_IDS.TITLE}`}
             >
@@ -93,8 +91,7 @@ const SectionGrid = ({ title, items, id, priority, columnsCount = DEFAULT_COLUMN
 
                 return (
                   <Link
-                    href={redirectionUrl}
-                    prefetch={false}
+                    to={redirectionUrl}
                     key={item?.id}
                     className="group relative no-underline"
                     data-testid={`${title}-${TEST_IDS.LINK}`}

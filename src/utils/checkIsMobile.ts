@@ -1,5 +1,3 @@
-'use client';
-
 import isServer from './isServer';
 
 const checkIsMobile = () => {

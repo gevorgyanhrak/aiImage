@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router';
 
 /**
- * Workaround:
- * Force scroll to top to prevent scroll position from persisting between route changes.
- * See: https://github.com/vercel/next.js/discussions/64435
+ * Force scroll to top on route changes.
  */
 const useScrollRestoration = () => {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);

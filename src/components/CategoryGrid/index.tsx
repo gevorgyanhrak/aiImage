@@ -1,7 +1,5 @@
-'use client';
-
 import { memo, useRef } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import useMasonryColumns from '@/hooks/useMasonryColumns';
@@ -50,8 +48,7 @@ const CategoryGrid = ({ title, items, id, basePath }: CategoryGridProps) => {
 
           return (
             <Link
-              href={href}
-              prefetch={false}
+              to={href}
               key={item?.id}
               className="group relative no-underline"
               data-testid={`${title}-${TEST_IDS.LINK}`}

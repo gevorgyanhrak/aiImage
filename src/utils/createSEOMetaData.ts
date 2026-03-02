@@ -1,8 +1,8 @@
 import { SITE_NAME, TWITTER_SITE, TWITTER_CREATOR, TWITTER_CARD, AUTHORS, OG_TYPE } from '@/constants/seo';
-import type { SeoSettings } from '@/types/seoSettings';
-import type { Metadata } from 'next/types';
 
-const createSEOMetaData = (seoSettings: SeoSettings | null): Metadata => {
+import type { SeoSettings } from '@/types/seoSettings';
+
+const createSEOMetaData = (seoSettings: SeoSettings | null) => {
   const { canonicalUrl, keywords, metaDescription, noFollow, noIndex, ogDescription, ogImage, ogTitle, ogUrl, title, twitterDescription, twitterImage, twitterTitle } = seoSettings ?? {};
 
   return {

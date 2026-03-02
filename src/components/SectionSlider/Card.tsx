@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router';
 
 import type { SliderItem } from '@/types/sectionItem';
 
@@ -22,7 +22,7 @@ const Card = ({ item, priority }: CardProps) => {
 
   return (
     <div className="flex w-80 shrink-0 flex-col items-stretch gap-3 rounded-xl bg-background/50 text-center shadow-sm" data-testid={TEST_IDS.CARD}>
-      <Link href={href} target="_blank" className="flex flex-col gap-3 group" scroll={false} data-pulse-name={title}>
+      <Link to={href} className="flex flex-col gap-3 group" data-pulse-name={title}>
         <LazyVideo src={videoUrl} priority={priority} title={title} poster={poster} width={width} height={height} sizes="(max-width: 640px) 12rem, 24rem" />
         <div className="flex flex-col">
           <h3 className="text-start text-base font-semibold leading-6 text-white font-hrakai group-hover:text-primary transition-color duration-300">{title}</h3>

@@ -1,8 +1,6 @@
-'use client';
-
-import Image from 'next/image';
-import type { ReactEventHandler } from 'react';
 import { useState } from 'react';
+
+import type { ReactEventHandler } from 'react';
 import type { IImageWithFallback } from './types';
 
 const ERROR_IMG_SRC =
@@ -30,18 +28,19 @@ const ImageWithFallback = ({
     onError?.(e);
   };
 
-  const sizing = fill ? { fill: true as const, sizes: sizes ?? '(min-width:1024px) 560px, 100vw' } : { width: width ?? 600, height: height ?? 600, sizes: sizes ?? '(min-width:1024px) 560px, 100vw' };
+  const fillStyles = fill ? { position: 'absolute' as const, inset: 0, width: '100%', height: '100%', objectFit: 'cover' as const } : {};
 
   return (
-    <Image
+    <img
       src={errored ? fallbackSrc : src}
-      blurDataURL={blurImageDataUrl}
       alt={alt}
       className={className}
-      preload={preload}
+      loading={preload ? 'eager' : 'lazy'}
       fetchPriority={fetchPriority}
       onError={handleError}
-      {...sizing}
+      width={fill ? undefined : (width ?? 600)}
+      height={fill ? undefined : (height ?? 600)}
+      style={fillStyles}
       {...rest}
       {...(errored ? { 'data-original-url': src } : {})}
     />

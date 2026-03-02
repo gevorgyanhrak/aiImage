@@ -1,8 +1,9 @@
 import { getRelatedLandings } from '@/lib/strapi/landings/related';
 import { TEST_IDS } from './constants/testIds';
 import MediaSection from '../SectionGrid';
-import type { LandingType } from '@/types/landing';
 import { DEFAULT_COLUMNS_COUNT } from '@/constants/grid';
+
+import type { LandingType } from '@/types/landing';
 
 interface SimilarPresetsProps {
   documentId: string;
@@ -10,10 +11,10 @@ interface SimilarPresetsProps {
   category: string;
 }
 
-const SimilarPresets = async ({ documentId, landingType, category }: SimilarPresetsProps) => {
+const SimilarPresets = ({ documentId, category }: SimilarPresetsProps) => {
   if (!documentId) return null;
 
-  const data = await getRelatedLandings(documentId, landingType);
+  const data = getRelatedLandings();
   if (!data?.length) return null;
 
   return (
