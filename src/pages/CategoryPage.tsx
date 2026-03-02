@@ -1,6 +1,7 @@
 import { useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 
+import Header from '@/components/Header';
 import CategoryGrid from '@/components/CategoryGrid';
 import PageJsonLinkedData from '@/components/PageJsonLinkedData';
 import { getCategoryBySlug } from '@/lib/strapi/categories';
@@ -22,9 +23,12 @@ const CategoryPage = () => {
 
   if (!items?.length) {
     return (
-      <main className="min-h-screen bg-background text-foreground px-3 md:px-6 flex items-center justify-center">
-        <h1 className="text-2xl">Category not found</h1>
-      </main>
+      <>
+        <Header />
+        <main className="min-h-screen bg-background text-foreground px-3 md:px-6 flex items-center justify-center">
+          <h1 className="text-2xl">Category not found</h1>
+        </main>
+      </>
     );
   }
 
@@ -37,6 +41,8 @@ const CategoryPage = () => {
   ];
 
   return (
+    <>
+    <Header />
     <main className="min-h-screen bg-background text-foreground px-3 md:px-6">
       <Helmet>
         <title>{seoSettings?.title || `${title} - ${SITE_NAME}`}</title>
@@ -59,6 +65,7 @@ const CategoryPage = () => {
         <CategoryGrid id={id} items={data.items} title={category} basePath={category} />
       </section>
     </main>
+    </>
   );
 };
 

@@ -12,19 +12,16 @@ type TabNavigationProps = {
 const ACTIVE_TAB_ID = 'active-tab-id';
 const OFFSET_SPACING = 6;
 
-const getStickyOffset = (tabsContainer: HTMLDivElement | null) => {
-  const tabsHeight = tabsContainer?.getBoundingClientRect().height ?? 0;
-  const header = document.querySelector<HTMLElement>(`[data-testid="${TEST_IDS.CONTAINER}"]`);
-  const headerHeight = header?.getBoundingClientRect().height ?? 0;
-
-  return headerHeight + tabsHeight + OFFSET_SPACING;
+const getStickyOffset = () => {
+  const header = document.querySelector<HTMLElement>('[data-testid="header-container"]');
+  const headerHeight = header?.getBoundingClientRect().height ?? 64;
+  return headerHeight + OFFSET_SPACING;
 };
 
 const TabNavigation = ({ items }: TabNavigationProps) => {
   const sectionIds = items.map(item => item.id);
   const [activeTabId, setActiveTabId] = useScrollSpy({ sectionIds });
-  const tabListRef = useRef<HTMLElement>(null);
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const underlineRef = useRef<HTMLSpanElement>(null);
 
   const handleTabClick = (value: string) => {
@@ -33,7 +30,7 @@ const TabNavigation = ({ items }: TabNavigationProps) => {
     if (!element) return;
     setActiveTabId(value);
 
-    const offset = getStickyOffset(tabsContainerRef.current);
+    const offset = getStickyOffset();
     const targetPosition = element.getBoundingClientRect().top + window.scrollY - offset;
 
     window.scrollTo({
@@ -44,101 +41,92 @@ const TabNavigation = ({ items }: TabNavigationProps) => {
 
   const updateUnderline = useCallback(() => {
     const activeButton = document.getElementById(ACTIVE_TAB_ID);
-    const container = tabListRef.current;
+    const nav = navRef.current;
     const underline = underlineRef.current;
 
-    if (!activeButton || !container || !underline) return;
+    if (!activeButton || !nav || !underline) return;
 
-    const containerRect = container.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
     const buttonRect = activeButton.getBoundingClientRect();
 
-    const left = buttonRect.left - containerRect.left + container.scrollLeft;
+    const left = buttonRect.left - navRect.left + nav.scrollLeft;
     const width = buttonRect.width;
 
     underline.style.left = `${left}px`;
     underline.style.width = `${width}px`;
   }, []);
 
-  // Update underline position and auto-scroll tabs when active changes
   useLayoutEffect(() => {
     const activeButton = document.getElementById(ACTIVE_TAB_ID) as HTMLElement | null;
     if (!activeButton) return;
 
     requestAnimationFrame(() => {
-      // Auto-center active tab in scroll container
-      const container = tabListRef.current;
-      if (container) {
-        const containerRect = container.getBoundingClientRect();
-        const activeButtonRect = activeButton.getBoundingClientRect();
-        const activeButtonCenter = activeButtonRect.left + activeButtonRect.width / 2;
-        const containerCenter = containerRect.left + containerRect.width / 2;
-        const delta = activeButtonCenter - containerCenter;
-        const targetScrollLeft = container.scrollLeft + delta;
-
-        container.scrollTo({
-          left: targetScrollLeft,
+      // Auto-scroll to keep active tab visible
+      const nav = navRef.current;
+      if (nav) {
+        const navRect = nav.getBoundingClientRect();
+        const activeRect = activeButton.getBoundingClientRect();
+        const activeCenter = activeRect.left + activeRect.width / 2;
+        const navCenter = navRect.left + navRect.width / 2;
+        const delta = activeCenter - navCenter;
+        nav.scrollTo({
+          left: nav.scrollLeft + delta,
           behavior: 'smooth',
         });
       }
 
-      // Update neon underline position
       updateUnderline();
     });
   }, [activeTabId, updateUnderline]);
 
   return (
-    <div
-      ref={tabsContainerRef}
-      className="sticky top-16 z-45 bg-[var(--header-bg)] px-4 md:px-6 py-0"
+    <nav
+      ref={navRef}
+      className="relative overflow-x-auto scrollbar-hide"
+      aria-label="Gallery categories"
       data-testid={TEST_IDS.CONTAINER}
       data-pulse-section="tabs"
     >
-      <nav
-        ref={tabListRef}
-        className="relative max-w-full w-full mx-auto overflow-x-auto scrollbar-hide"
-        aria-label="Gallery categories"
+      <ul
+        className="flex items-center gap-1 md:gap-1.5"
+        role="list"
+        data-testid={TEST_IDS.LIST}
       >
-        <ul
-          className="w-full mx-auto py-3 flex gap-6 md:gap-8"
-          role="list"
-          data-testid={TEST_IDS.LIST}
-        >
-          {items.map(({ id, title }) => {
-            const isActive = activeTabId === id;
+        {items.map(({ id, title }) => {
+          const isActive = activeTabId === id;
 
-            return (
-              <li
-                key={id}
-                {...(isActive && { id: ACTIVE_TAB_ID })}
-                className="list-none flex-shrink-0"
-                data-testid={TEST_IDS.ITEM}
+          return (
+            <li
+              key={id}
+              {...(isActive && { id: ACTIVE_TAB_ID })}
+              className="list-none shrink-0"
+              data-testid={TEST_IDS.ITEM}
+            >
+              <button
+                type="button"
+                onClick={() => handleTabClick(String(id))}
+                className={cn(
+                  'relative px-3 py-1.5 text-[13px] font-medium tracking-wide rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap',
+                  'focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ring',
+                  'border-none bg-transparent',
+                  isActive
+                    ? 'text-white'
+                    : 'text-[#666] hover:text-[#bbb] hover:bg-white/[0.04]',
+                )}
+                aria-current={isActive ? 'true' : undefined}
+                aria-controls={String(id)}
+                data-testid={TEST_IDS.BUTTON}
+                data-pulse-name={title}
               >
-                <button
-                  type="button"
-                  onClick={() => handleTabClick(String(id))}
-                  className={cn(
-                    'relative pb-3 text-sm font-medium tracking-wide transition-all duration-300 cursor-pointer',
-                    'focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ring',
-                    'border-none bg-transparent',
-                    isActive
-                      ? 'text-white neon-text-subtle'
-                      : 'text-[#555] hover:text-[#aaa]',
-                  )}
-                  aria-current={isActive ? 'true' : undefined}
-                  aria-controls={String(id)}
-                  data-testid={TEST_IDS.BUTTON}
-                  data-pulse-name={title}
-                >
-                  {title}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        {/* Animated neon underline */}
-        <span ref={underlineRef} className="neon-underline" />
-      </nav>
-    </div>
+                {title}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {/* Animated gradient underline */}
+      <span ref={underlineRef} className="neon-underline" style={{ bottom: '-2px' }} />
+    </nav>
   );
 };
 

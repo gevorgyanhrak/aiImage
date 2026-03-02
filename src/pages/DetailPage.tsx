@@ -2,6 +2,7 @@ import { useParams, useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { Theme } from '@radix-ui/themes';
 
+import Header from '@/components/Header';
 import Media from '@/components/Media';
 import BreadCrump from '@/components/BreadCrump';
 import SimilarPresets from '@/components/SimilarPresets';
@@ -79,9 +80,12 @@ const DetailPage = () => {
 
   if (!media) {
     return (
-      <main className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <h1 className="text-2xl">Not found</h1>
-      </main>
+      <>
+        <Header />
+        <main className="min-h-screen bg-background text-foreground flex items-center justify-center">
+          <h1 className="text-2xl">Not found</h1>
+        </main>
+      </>
     );
   }
 
@@ -123,6 +127,8 @@ const DetailPage = () => {
         };
 
   return (
+    <>
+    <Header />
     <Theme>
       <Helmet>
         <title>{seoSettings?.title || `${title} - ${SITE_NAME}`}</title>
@@ -187,6 +193,7 @@ const DetailPage = () => {
         </div>
       </main>
     </Theme>
+    </>
   );
 };
 

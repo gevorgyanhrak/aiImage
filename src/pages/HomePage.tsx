@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
+import Header from '@/components/Header';
 import Tabs from '@/components/Tabs';
 import componentsMap from '@/componentMaps/hub';
 import { getHubByDocumentId } from '@/lib/strapi/hubs';
@@ -28,9 +29,11 @@ const HomePage = () => {
         <title>{pageData.seoSettings?.title || SITE_NAME}</title>
         {pageData.seoSettings?.metaDescription && <meta name="description" content={pageData.seoSettings.metaDescription} />}
       </Helmet>
+      <Header>
+        <Tabs items={tabItems} />
+      </Header>
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
       <main className="min-h-screen bg-background text-foreground">
-        <Tabs items={tabItems} />
         <div className="px-3 md:px-6 md:py-2 flex flex-col gap-10">
           {pageData.components.map((componentData, index) => {
             const Component = componentsMap[componentData.__component];
