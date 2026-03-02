@@ -1,0 +1,65 @@
+:root {
+  /* Font configuration */
+  --font-size: 16px;
+  --font-family: 'Mulish', 'hrakAi-Fonts', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-hrakai: 'hrakAi-Fonts', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Light mode color system */
+  --background: rgba(255, 255, 255, 1);
+  --foreground: rgba(0, 0, 0, 1);
+  --card: rgba(255, 255, 255, 1);
+  --card-foreground: rgba(0, 0, 0, 1);
+  --popover: rgba(255, 255, 255, 1);
+  --popover-foreground: rgba(0, 0, 0, 1);
+  --primary: rgb(232, 89, 180, 1.00);
+  --primary-foreground: rgba(255, 255, 255, 1);
+  --secondary: rgba(90, 0, 238, 1);
+  --secondary-foreground: rgba(255, 255, 255, 1);
+  --muted: rgba(242, 242, 242, 1);
+  --muted-foreground: rgba(97, 97, 97, 1);
+  --accent: rgba(135, 76, 234, 1);
+  --accent-foreground: rgba(255, 255, 255, 1);
+  --destructive: rgba(211, 30, 42, 1);
+  --destructive-foreground: rgba(255, 255, 255, 1);
+  --border: rgba(224, 224, 224, 1);
+  --input: rgba(255, 255, 255, 1);
+  --input-background: rgba(255, 255, 255, 1);
+  --ring: rgba(232, 89, 180, 1.00);
+  --radius: 8px;
+  --radius-button: 24px;
+
+  /* Custom app tokens */
+  --app-black: #000;
+  --color-valentine: #E859B4;
+  --controls-text-default: #B3B3B3;
+  --controls-border-default: #3B3B3B;
+  --gradient-valentine-start: #F44097;
+  --gradient-valentine-end: #FC67FA;
+  --gradient-valentine: linear-gradient(315deg, var(--gradient-valentine-start) 25%, var(--gradient-valentine-end) 75%);
+  --footer-text: #808080;
+  --footer-background: #000000;
+  --gradient-upload: linear-gradient(181deg, #000000 43%, #F44097 415%)
+}
+
+.dark {
+  --background: #121212;
+  --foreground: rgba(255, 255, 255, 1);
+  --card: rgba(38, 38, 38, 1);
+  --card-foreground: rgba(255, 255, 255, 1);
+  --popover: rgba(38, 38, 38, 1);
+  --popover-foreground: rgba(255, 255, 255, 1);
+  --primary: rgba(232, 89, 180, 1.00);
+  --primary-foreground: rgba(255, 255, 255, 1);
+  --secondary: rgba(90, 0, 238, 1);
+  --secondary-foreground: rgba(255, 255, 255, 1);
+  --muted: rgba(64, 64, 64, 1);
+  --muted-foreground: rgba(161, 161, 161, 1);
+  --accent: rgba(135, 76, 234, 1);
+  --accent-foreground: rgba(255, 255, 255, 1);
+  --destructive: rgba(211, 30, 42, 1);
+  --destructive-foreground: rgba(255, 255, 255, 1);
+  --border: rgba(64, 64, 64, 1);
+  --input: rgba(38, 38, 38, 1);
+  --input-background: rgba(38, 38, 38, 1);
+  --ring: rgba(232, 89, 180, 1.00);
+}

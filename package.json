@@ -1,0 +1,90 @@
+{
+  "name": "hrak-ai",
+  "version": "0.1.95",
+  "private": true,
+  "scripts": {
+    "dev": "APP_ENV=development next dev --turbopack",
+    "build": "APP_ENV=development next build --turbopack",
+    "build:production": "APP_ENV=production next build --turbopack",
+    "build:preproduction": "APP_ENV=preproduction next build --turbopack",
+    "start": "next start",
+    "start:preproduction": "APP_ENV=preproduction next start",
+    "start:production": "APP_ENV=production next start",
+    "lint": "eslint 'src/**/*.{js,ts,tsx,jsx}' --quiet",
+    "lint-fix": "eslint 'src/**/*.{js,ts,tsx,jsx}' --quiet --fix",
+    "lint-ci": "eslint 'src/**/*.{js,ts,tsx,jsx}' -f json -o eslint-report.json",
+    "check:ts": "tsc --noEmit",
+    "type-check": "tsc --noEmit --project tsconfig.lint.json",
+    "prepare": "is-ci || husky install || true",
+    "commit": "git cz --hook",
+    "lint-staged": "lint-staged"
+  },
+  "dependencies": {
+    "@next/third-parties": "^16.0.10",
+    "@pulse/react": "^1.95.6",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@radix-ui/themes": "^3.2.1",
+    "@tailwindcss/postcss": "^4.1.13",
+    "axios": "^1.13.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.544.0",
+    "next": "16.0.10",
+    "postcss": "^8.5.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-dropzone": "^14.3.8",
+    "react-error-boundary": "^6.0.0",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.13",
+    "use-sync-external-store": "^1.5.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@commitlint/cz-commitlint": "^20.2.0",
+    "@eslint/eslintrc": "^3.3.3",
+    "@next/eslint-plugin-next": "^16.0.10",
+    "@types/dotenv-flow": "^3.3.3",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "commitizen": "^4.3.1",
+    "critters": "^0.0.25",
+    "dotenv-flow": "^3.3.0",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "16.0.10",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "micromatch": "^4.0.8",
+    "prettier": "^3.7.4",
+    "schema-dts": "^1.1.5",
+    "typescript": "^5.9.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

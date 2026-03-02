@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" },
+        {"key": "CDN-Cache-Control", "value":"no-store, max-age=0"},
+        {"key":"Vercel-CDN-Cache-Control", "value":"no-store, max-age=0"},
+        {"key": "Vay", "value": "no-store, max-age=0"}
+      ]
+    }
+  ]
+}

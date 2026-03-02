@@ -1,0 +1,33 @@
+/* hrakAi font definitions - using system fonts */
+
+@font-face {
+  font-family: 'hrakAi-Fonts';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('system-ui');
+}
+
+@font-face {
+  font-family: 'hrakAi-Fonts';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('system-ui');
+}
+
+@font-face {
+  font-family: 'hrakAi-Fonts';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('system-ui');
+}
+
+@font-face {
+  font-family: 'hrakAi-Fonts';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('system-ui');
+}

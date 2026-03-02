@@ -1,0 +1,7 @@
+/* Only for /[category]/[id] page */
+@layer components {
+  .bg-upload-gradient {
+    background: var(--gradient-upload);
+  }
+}
+
