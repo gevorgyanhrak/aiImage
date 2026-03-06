@@ -7,7 +7,10 @@ interface IFrame {
 
 const Frame = ({ children, dataTestId }: IFrame) => {
   return (
-    <div className="relative bg-black flex h-40 w-full flex-col items-center justify-center gap-3 transition-all outline-none overflow-hidden rounded-[var(--radius)]" data-testid={dataTestId}>
+    <div
+      className="detail-upload-zone relative flex h-40 w-full flex-col items-center justify-center gap-3 outline-none cursor-pointer"
+      data-testid={dataTestId}
+    >
       {children}
     </div>
   );

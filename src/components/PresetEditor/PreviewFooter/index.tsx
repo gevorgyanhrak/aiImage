@@ -162,12 +162,15 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
         id={String(id)}
         onClick={onGenerate}
         aria-disabled={disabled}
-        className={cn('w-full h-12 rounded-full bg-primary text-background gap-4 justify-center', disabled && 'opacity-50')}
+        className={cn(
+          'detail-generate-btn w-full h-12 rounded-xl gap-3 justify-center border-0',
+          disabled && 'opacity-35 pointer-events-none',
+        )}
         data-testid={TEST_IDS.GENERATE_BUTTON}
         data-pulse-name={PULSE_NAMES.GENERATE}
       >
-        <Sparkles className="h-5 w-5 text-background fill-background" />
-        <span className="text-[16px] leading-[24px] font-semibold tracking-normal text-background">{primaryActionTitle}</span>
+        <Sparkles className="h-5 w-5 text-white" />
+        <span className="text-[15px] leading-[24px] font-semibold text-white">{primaryActionTitle}</span>
       </Button>
     </Flex>
   );

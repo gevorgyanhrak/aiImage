@@ -82,8 +82,8 @@ const DetailPage = () => {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-background text-foreground flex items-center justify-center">
-          <h1 className="text-2xl">Not found</h1>
+        <main className="detail-page min-h-screen flex items-center justify-center">
+          <h1 className="text-xl text-white/60">Not found</h1>
         </main>
       </>
     );
@@ -134,7 +134,7 @@ const DetailPage = () => {
         <title>{seoSettings?.title || `${title} - ${SITE_NAME}`}</title>
         {seoSettings?.metaDescription && <meta name="description" content={seoSettings.metaDescription} />}
       </Helmet>
-      <main className="min-h-screen bg-background md:bg-app-black text-foreground" data-testid={TEST_IDS.MAIN}>
+      <main className="detail-page min-h-screen text-white" data-testid={TEST_IDS.MAIN}>
         <PageJsonLinkedData
           breadcrumbListPayload={{ segments }}
           {...(type === MediaType.VIDEO && {
@@ -151,15 +151,26 @@ const DetailPage = () => {
           webSitePayload={{ seoSettings }}
         />
         <GlobalHooksWrapper />
-        <div className="mx-auto px-3 pt-2 md:pt-10 md:pb-8 md:px-6">
+
+        {/* Breadcrumb */}
+        <div className="mx-auto max-w-7xl px-4 pt-4 md:pt-6 md:px-8">
           <BreadCrump segments={segments} />
         </div>
-        <div className="py-4 mx-auto max-w-5xl px-4">
-          <section className="grid grid-cols-1 gap-3 rounded-2xl md:bg-background md:p-6 lg:grid-cols-2 lg:gap-6" data-testid={TEST_IDS.CONTENT_SECTION}>
-            <div className="contents lg:flex lg:flex-col lg:gap-4 relative">
-              <div className="order-1 lg:order-none">
-                <PresetHero title={title} description={description} />
-              </div>
+
+        {/* Two-panel layout */}
+        <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-10">
+          <div
+            className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-6 lg:gap-8"
+            data-testid={TEST_IDS.CONTENT_SECTION}
+          >
+            {/* Left panel — controls */}
+            <div className="detail-card flex flex-col gap-6 p-5 md:p-7 order-2 lg:order-1 self-start">
+              {/* Title & description */}
+              <PresetHero title={title} description={description} />
+
+              <div className="detail-separator" />
+
+              {/* Upload areas & text inputs */}
               <ItemsAndFooterWrapper
                 uploadItems={uploadItems}
                 textItems={textItems}
@@ -177,18 +188,27 @@ const DetailPage = () => {
               />
             </div>
 
-            <div className="w-full h-[160px] md:h-[300px] lg:h-[540px] flex items-center justify-center order-2 lg:order-none" data-testid={TEST_IDS.MEDIA_PREVIEW}>
-              <Media
-                playbackMode={PlaybackMode.Instant}
-                item={mediaItem}
-                priority
-                className="w-full h-[160px] md:h-full"
-                mediaClassName="object-contain"
-                isWithBackground
-                sizes="(max-width: 640px) 60vw, (max-width: 1024px) 45vw, (max-width: 1440px) 25vw, (max-width: 1920px) 20rem, 50rem"
-              />
+            {/* Right panel — media preview */}
+            <div className="order-1 lg:order-2 flex flex-col gap-4 self-start lg:sticky lg:top-20">
+              <span className="detail-label px-1">Preview</span>
+              <div
+                className="detail-media-wrap w-full h-[220px] md:h-[400px] lg:h-[560px] flex items-center justify-center"
+                data-testid={TEST_IDS.MEDIA_PREVIEW}
+              >
+                <Media
+                  playbackMode={PlaybackMode.Instant}
+                  item={mediaItem}
+                  priority
+                  className="w-full h-full"
+                  mediaClassName="object-contain"
+                  isWithBackground
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 35vw, 40rem"
+                />
+              </div>
             </div>
-          </section>
+          </div>
+
+          {/* Similar effects */}
           <SimilarPresets documentId={documentId} landingType={landingType} category={category} />
         </div>
       </main>

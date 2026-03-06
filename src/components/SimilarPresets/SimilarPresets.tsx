@@ -18,8 +18,9 @@ const SimilarPresets = ({ documentId, category }: SimilarPresetsProps) => {
   if (!data?.length) return null;
 
   return (
-    <div className="mt-10 flex flex-col gap-6" data-testid={TEST_IDS.SECTION} data-pulse-section={`similar-presets-${category}`}>
-      <h3 className="text-foreground" data-testid={TEST_IDS.TITLE}>
+    <div className="mt-14 flex flex-col gap-5" data-testid={TEST_IDS.SECTION} data-pulse-section={`similar-presets-${category}`}>
+      <div className="detail-separator" />
+      <h3 className="detail-label text-[13px]" data-testid={TEST_IDS.TITLE}>
         Explore similar Effects
       </h3>
       <MediaSection items={data} id={1} defaultColumn={DEFAULT_COLUMNS_COUNT.UltraLarge} />

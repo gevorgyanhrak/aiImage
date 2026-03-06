@@ -3,7 +3,6 @@ import type { IPreviewState } from '@/store/preview';
 import { useAppStore } from '@/store/store';
 import type { LandingTextItem } from '@/types/landing';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { TEST_IDS } from './constants/testIds';
 
@@ -26,14 +25,18 @@ const TextInput = ({ textItem }: TextInputProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={textItem.id}>Text Prompt</Label>
+      <span className="detail-label">Prompt</span>
       <Textarea
         data-testid={TEST_IDS.TEXT_AREA}
         id={textItem.id}
         value={textItems[textItem.id] ?? ''}
         onChange={onTextAreaChange}
-        placeholder="Describe what you want to create…"
-        className={cn('bg-[#2A2A2A] border-2 border-color-[#3B3B3B] rounded-[8px] max-h-[70px] md:max-h-25 resize-none ', isEmpty && 'bg-black')}
+        placeholder="Describe what you want to create..."
+        className={cn(
+          'rounded-xl max-h-[80px] md:max-h-28 resize-none text-sm text-white/90 placeholder:text-white/20',
+          'border border-white/[0.08] focus:border-white/15 focus:ring-0',
+          isEmpty ? 'bg-white/[0.02]' : 'bg-white/[0.04]',
+        )}
       />
     </div>
   );

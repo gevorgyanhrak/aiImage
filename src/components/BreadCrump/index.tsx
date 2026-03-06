@@ -27,11 +27,11 @@ const BreadCrump = ({ segments, className }: BreadCrumpProps) => {
             <Fragment key={isSkeleton ? index : href}>
               <BreadcrumbItem data-testid={TEST_IDS.ITEM}>
                 {isLast ? (
-                  <BreadcrumbPage className="flex items-center hover:text-primary font-medium" data-testid={TEST_IDS.PAGE}>
+                  <BreadcrumbPage className="flex items-center text-white/30 font-normal text-sm" data-testid={TEST_IDS.PAGE}>
                     {content}
                   </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink asChild className="flex text-white items-center font-semibold hover:text-primary" data-testid={TEST_IDS.LINK}>
+                  <BreadcrumbLink asChild className="flex text-white/50 items-center font-normal text-sm hover:text-white/70 transition-colors" data-testid={TEST_IDS.LINK}>
                     <Link to={href}>{content}</Link>
                   </BreadcrumbLink>
                 )}

@@ -29,12 +29,20 @@ const ItemsAndFooterWrapper = ({ uploadItems, textItems, id, flowId, button, red
 
   return (
     <>
-      <div ref={containerRef} className="order-3 lg:order-none flex flex-col max-h-65 md:max-h-90 overflow-y-scroll gap-4">
+      {/* Upload & text inputs */}
+      <div ref={containerRef} className="flex flex-col max-h-65 md:max-h-90 overflow-y-auto gap-4 scrollbar-hide">
         {uploadItems && (
-          <div key={id} className={`grid ${uploadItems.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-2`} data-testid={TEST_IDS.UPLOAD_GRID}>
-            {uploadItems.map(({ id, title, extensions, type }) => (
-              <UploadArea key={id} title={title} extensions={extensions} id={String(id)} type={type} shouldGetMetadata={!!flowId} searchParams={queryParams} />
-            ))}
+          <div>
+            {uploadItems.length > 0 && (
+              <span className="detail-label mb-2 block">
+                {uploadItems.length === 1 ? 'Upload' : 'Upload files'}
+              </span>
+            )}
+            <div key={id} className={`grid ${uploadItems.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-3`} data-testid={TEST_IDS.UPLOAD_GRID}>
+              {uploadItems.map(({ id, title, extensions, type }) => (
+                <UploadArea key={id} title={title} extensions={extensions} id={String(id)} type={type} shouldGetMetadata={!!flowId} searchParams={queryParams} />
+              ))}
+            </div>
           </div>
         )}
         {textItems?.map(textItem => (
@@ -42,24 +50,23 @@ const ItemsAndFooterWrapper = ({ uploadItems, textItems, id, flowId, button, red
         ))}
       </div>
 
-      <div className="space-y-6 order-4 lg:order-none">
-        <div className="flex flex-col gap-2">
-          {button && (
-            <PreviewFooter
-              {...button}
-              category={category}
-              primaryActionTitle={button.title}
-              redirectionUrl={redirectionUrl}
-              prompt={transformationPrompt ?? prompt}
-              textItemsData={textItems}
-              ids={itemsIds}
-              media={mediaItem}
-              transformations={transformations}
-              scrollOnEmptyInput={scrollOnEmptyInput}
-            />
-          )}
-          <TermsNotice />
-        </div>
+      {/* Generate button & terms */}
+      <div className="flex flex-col gap-3 pt-2">
+        {button && (
+          <PreviewFooter
+            {...button}
+            category={category}
+            primaryActionTitle={button.title}
+            redirectionUrl={redirectionUrl}
+            prompt={transformationPrompt ?? prompt}
+            textItemsData={textItems}
+            ids={itemsIds}
+            media={mediaItem}
+            transformations={transformations}
+            scrollOnEmptyInput={scrollOnEmptyInput}
+          />
+        )}
+        <TermsNotice />
       </div>
     </>
   );
