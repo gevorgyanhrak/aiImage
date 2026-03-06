@@ -13,7 +13,6 @@ import QuickGenerate from '@/components/QuickGenerate';
 import type { TabItem } from '@/types/tabs';
 
 const landingsLimit = 20;
-const QUICK_GENERATE_POSITION = 2;
 
 const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -37,31 +36,19 @@ const HomePage = () => {
       </Header>
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
       <main className="min-h-screen bg-[#0a0a0a] text-white">
-        <div className="px-3 md:px-6 py-4 md:py-6 flex flex-col gap-6">
-          {/* Hero Banner */}
+        <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-6">
           <HeroBanner />
 
-          {/* Content sections with QuickGenerate inserted after first 2 */}
           {pageData.components.map((componentData, index) => {
             const Component = componentsMap[componentData.__component];
             if (!Component) return null;
-
-            return (
-              <div key={componentData.id}>
-                <Component {...componentData} priority={index === 0} searchParams={queryParams} />
-                {index === QUICK_GENERATE_POSITION - 1 && (
-                  <div className="mt-6">
-                    <QuickGenerate />
-                  </div>
-                )}
-              </div>
-            );
+            return <Component {...componentData} priority={index === 0} key={componentData.id} searchParams={queryParams} />;
           })}
-
-          {/* Fallback: if fewer than 2 sections, show QuickGenerate at the end */}
-          {pageData.components.length < QUICK_GENERATE_POSITION && <QuickGenerate />}
         </div>
       </main>
+
+      {/* Sticky bottom bar */}
+      <QuickGenerate />
     </>
   );
 };

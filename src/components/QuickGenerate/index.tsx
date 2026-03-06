@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { Sparkles, Upload, X, ImageIcon, Loader2 } from 'lucide-react';
+import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, ImageIcon } from 'lucide-react';
 
 import postJson from '@/utils/postJson';
 import uploadToCDN from '@/utils/uploadToCDN';
@@ -10,6 +10,7 @@ type GenerateState = 'idle' | 'uploading' | 'generating' | 'done';
 const ACCEPT = 'image/png,image/jpeg,image/webp,image/heic,image/heif';
 
 const QuickGenerate = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<GenerateState>('idle');
   const [prompt, setPrompt] = useState('');
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
@@ -98,156 +99,147 @@ const QuickGenerate = () => {
   const canGenerate = (prompt.trim().length > 0 || uploadedUrl) && !isGenerating && !isUploading;
 
   return (
-    <section className="rounded-2xl bg-[#0F1113] border border-white/[0.06] overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-0">
-        {/* Left — Controls */}
-        <div className="flex flex-col gap-5 p-5 md:p-7 border-b lg:border-b-0 lg:border-r border-white/[0.06]">
-          <div>
-            <h2 className="text-lg font-semibold text-white tracking-[-0.01em]">Quick Generate</h2>
-            <p className="mt-1 text-sm text-white/35">Upload an image and describe your idea</p>
-          </div>
-
-          {/* Image upload area */}
-          <div>
-            <span className="mb-2 block text-[11px] font-medium uppercase tracking-[0.08em] text-white/35">
-              Reference image
-            </span>
-
-            {previewUrl ? (
-              <div className="relative h-36 rounded-xl overflow-hidden bg-black/40 border border-white/[0.06]">
-                <img
-                  src={previewUrl}
-                  alt="Uploaded reference"
-                  className="h-full w-full object-contain"
-                />
-                {isUploading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                    <Loader2 className="h-6 w-6 animate-spin text-[#F44097]" />
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={clearImage}
-                  className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg bg-black/70 text-white/60 hover:text-white transition-colors"
-                  aria-label="Remove image"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ) : (
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => inputRef.current?.click()}
-                onDragOver={e => e.preventDefault()}
-                onDrop={onDrop}
-                className="flex h-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-white/10 bg-white/[0.02] transition-colors hover:border-[#F44097]/30 hover:bg-[#F44097]/[0.02]"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.05]">
-                  <Upload className="h-4.5 w-4.5 text-white/30" />
-                </div>
-                <span className="text-xs text-white/30">Drop image or click to upload</span>
-              </div>
+    <div className="fixed bottom-0 left-0 right-0 z-40">
+      {/* Panel */}
+      <div
+        className={cn(
+          'w-full bg-[#0F1113] border-t border-white/[0.06] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          isOpen ? 'quick-gen-shadow' : '',
+        )}
+      >
+        {/* Toggle bar — always visible */}
+        <button
+          type="button"
+          onClick={() => setIsOpen(prev => !prev)}
+          className="flex w-full items-center justify-between px-4 md:px-6 h-11 hover:bg-white/[0.02] transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-3.5 w-3.5 text-[#F44097]" />
+            <span className="text-sm font-medium text-white/70">Quick Generate</span>
+            {isGenerating && (
+              <Loader2 className="h-3 w-3 animate-spin text-[#F44097]" />
             )}
-
-            <input
-              ref={inputRef}
-              type="file"
-              accept={ACCEPT}
-              onChange={onFileInputChange}
-              className="hidden"
-            />
           </div>
-
-          {/* Prompt input */}
-          <div>
-            <span className="mb-2 block text-[11px] font-medium uppercase tracking-[0.08em] text-white/35">
-              Prompt
-            </span>
-            <textarea
-              value={prompt}
-              onChange={e => setPrompt(e.target.value)}
-              placeholder="Describe what you want to create..."
-              rows={3}
-              className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3 text-sm text-white/90 placeholder:text-white/20 outline-none focus:border-white/15 transition-colors"
-            />
-          </div>
-
-          {/* Error message */}
-          {error && (
-            <p className="text-xs text-red-400">{error}</p>
-          )}
-
-          {/* Generate / Reset button */}
-          {isDone ? (
-            <button
-              type="button"
-              onClick={onReset}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] text-sm font-medium text-white/70 transition-colors hover:bg-white/[0.07]"
-            >
-              Create another
-            </button>
+          {isOpen ? (
+            <ChevronDown className="h-4 w-4 text-white/30" />
           ) : (
-            <button
-              type="button"
-              onClick={onGenerate}
-              disabled={!canGenerate}
-              className={cn(
-                'flex h-12 w-full items-center justify-center gap-2 rounded-xl text-[15px] font-semibold transition-all',
-                'bg-gradient-to-r from-[#F44097] to-[#FC67FA] text-white',
-                'shadow-[0_0_20px_rgba(244,64,151,0.25)] hover:shadow-[0_0_32px_rgba(244,64,151,0.4)]',
-                'active:translate-y-px',
-                (!canGenerate) && 'opacity-30 pointer-events-none',
-              )}
-            >
-              {isGenerating ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+            <ChevronUp className="h-4 w-4 text-white/30" />
+          )}
+        </button>
+
+        {/* Expandable content — h-[150px] */}
+        <div
+          className={cn(
+            'overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+            isOpen ? 'max-h-[150px] opacity-100' : 'max-h-0 opacity-0',
+          )}
+        >
+          <div className="h-[150px] flex items-stretch border-t border-white/[0.04] px-4 md:px-6 gap-3 py-3">
+            {/* Upload area */}
+            <div className="shrink-0 w-[120px]">
+              {previewUrl ? (
+                <div className="relative h-full rounded-lg overflow-hidden bg-black/40 border border-white/[0.06]">
+                  <img src={previewUrl} alt="Uploaded" className="h-full w-full object-cover" />
+                  {isUploading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                      <Loader2 className="h-5 w-5 animate-spin text-[#F44097]" />
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={clearImage}
+                    className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded bg-black/70 text-white/60 hover:text-white transition-colors"
+                    aria-label="Remove image"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
               ) : (
-                <>
-                  <Sparkles className="h-4.5 w-4.5" />
-                  Generate
-                </>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => inputRef.current?.click()}
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={onDrop}
+                  className="flex h-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-dashed border-white/10 bg-white/[0.02] transition-colors hover:border-[#F44097]/30 hover:bg-[#F44097]/[0.02]"
+                >
+                  <Upload className="h-4 w-4 text-white/25" />
+                  <span className="text-[10px] text-white/25 text-center leading-tight px-1">Upload image</span>
+                </div>
               )}
-            </button>
-          )}
-        </div>
+              <input ref={inputRef} type="file" accept={ACCEPT} onChange={onFileInputChange} className="hidden" />
+            </div>
 
-        {/* Right — Preview / Result */}
-        <div className="flex items-center justify-center bg-[#0a0b0d] p-5 md:p-7 min-h-[260px] lg:min-h-[420px]">
-          {isDone && resultUrl ? (
-            <div className="relative w-full h-full flex items-center justify-center">
-              <img
-                src={resultUrl}
-                alt="Generated result"
-                className="max-h-[380px] w-auto max-w-full rounded-lg object-contain"
+            {/* Prompt + Generate */}
+            <div className="flex-1 flex flex-col gap-2 min-w-0">
+              <textarea
+                value={prompt}
+                onChange={e => setPrompt(e.target.value)}
+                placeholder="Describe what you want to create..."
+                rows={2}
+                className="flex-1 w-full resize-none rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white/90 placeholder:text-white/20 outline-none focus:border-white/15 transition-colors"
               />
+              <div className="flex items-center gap-2">
+                {error && <p className="text-[10px] text-red-400 truncate flex-1">{error}</p>}
+                <div className="ml-auto flex gap-2">
+                  {isDone && (
+                    <button
+                      type="button"
+                      onClick={onReset}
+                      className="flex h-8 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-medium text-white/60 hover:bg-white/[0.07] transition-colors"
+                    >
+                      New
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={onGenerate}
+                    disabled={!canGenerate}
+                    className={cn(
+                      'flex h-8 items-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-all',
+                      'bg-gradient-to-r from-[#F44097] to-[#FC67FA] text-white',
+                      'shadow-[0_0_12px_rgba(244,64,151,0.2)] hover:shadow-[0_0_20px_rgba(244,64,151,0.35)]',
+                      'active:translate-y-px',
+                      !canGenerate && 'opacity-30 pointer-events-none',
+                    )}
+                  >
+                    {isGenerating ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <>
+                        <Sparkles className="h-3.5 w-3.5" />
+                        Generate
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
-          ) : isGenerating ? (
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative flex h-16 w-16 items-center justify-center">
-                <div className="absolute inset-0 rounded-full border-2 border-white/[0.06]" />
-                <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#F44097] animate-spin" />
-                <Sparkles className="h-6 w-6 text-[#F44097]" />
-              </div>
-              <div className="text-center">
-                <p className="text-sm font-medium text-white/60">Generating...</p>
-                <p className="mt-1 text-xs text-white/25">This won't take long</p>
-              </div>
+
+            {/* Result preview */}
+            <div className="shrink-0 w-[120px] flex items-center justify-center rounded-lg bg-[#0a0b0d] border border-white/[0.04] overflow-hidden">
+              {isDone && resultUrl ? (
+                <img src={resultUrl} alt="Generated result" className="h-full w-full object-cover" />
+              ) : isGenerating ? (
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className="relative flex h-8 w-8 items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border border-white/[0.06]" />
+                    <div className="absolute inset-0 rounded-full border border-transparent border-t-[#F44097] animate-spin" />
+                    <Sparkles className="h-3 w-3 text-[#F44097]" />
+                  </div>
+                  <span className="text-[9px] text-white/30">Generating</span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-1">
+                  <ImageIcon className="h-5 w-5 text-white/10" />
+                  <span className="text-[9px] text-white/15 text-center px-1">Result</span>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="flex flex-col items-center gap-3 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.03] border border-white/[0.06]">
-                <ImageIcon className="h-6 w-6 text-white/15" />
-              </div>
-              <div>
-                <p className="text-sm text-white/25">Your result will appear here</p>
-                <p className="mt-0.5 text-xs text-white/15">Upload an image & enter a prompt to get started</p>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
