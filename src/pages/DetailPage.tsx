@@ -83,7 +83,7 @@ const DetailPage = () => {
       <>
         <Header />
         <main className="detail-page min-h-screen flex items-center justify-center">
-          <h1 className="text-xl text-white/60">Not found</h1>
+          <h1 className="text-xl text-[var(--page-text-secondary)]">Not found</h1>
         </main>
       </>
     );
@@ -134,7 +134,7 @@ const DetailPage = () => {
         <title>{seoSettings?.title || `${title} - ${SITE_NAME}`}</title>
         {seoSettings?.metaDescription && <meta name="description" content={seoSettings.metaDescription} />}
       </Helmet>
-      <main className="detail-page min-h-screen text-white" data-testid={TEST_IDS.MAIN}>
+      <main className="detail-page min-h-screen text-[var(--page-text)]" data-testid={TEST_IDS.MAIN}>
         <PageJsonLinkedData
           breadcrumbListPayload={{ segments }}
           {...(type === MediaType.VIDEO && {

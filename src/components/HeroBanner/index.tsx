@@ -74,16 +74,16 @@ const HeroBanner = () => {
                 {/* ── STEP 1: Upload photo ── */}
                 <div className="hero-step hero-step-1 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
                   {/* Step label */}
-                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                  <div className="flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1">
                     <span className="text-[10px] font-semibold text-[#F44097]">Step 1</span>
-                    <span className="text-[10px] text-white/30">Upload your photo</span>
+                    <span className="text-[10px] text-[var(--page-text-muted)]">Upload your photo</span>
                   </div>
 
                   {/* Upload animation */}
-                  <div className="hero-demo-upload relative flex h-28 w-28 items-center justify-center rounded-2xl border-2 border-dashed border-white/10 bg-white/[0.02]">
-                    <Upload className="h-8 w-8 text-white/15" />
+                  <div className="hero-demo-upload relative flex h-28 w-28 items-center justify-center rounded-2xl border-2 border-dashed border-[var(--surface-border)] bg-[var(--input-bg)]">
+                    <Upload className="h-8 w-8 text-[var(--page-text-faint)]" />
                     {/* Animated photo dropping in */}
-                    <div className="hero-photo-drop absolute inset-3 rounded-xl bg-gradient-to-br from-[#1a1225] to-[#15101f] border border-white/[0.08] flex items-center justify-center overflow-hidden">
+                    <div className="hero-photo-drop absolute inset-3 rounded-xl bg-gradient-to-br from-[var(--hero-img-from)] to-[var(--hero-img-via)] border border-[var(--surface-border-strong)] flex items-center justify-center overflow-hidden">
                       <ImageIcon className="h-6 w-6 text-[#F44097]/30" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#F44097]/5 to-transparent" />
                     </div>
@@ -94,20 +94,20 @@ const HeroBanner = () => {
                     <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#F44097]/20">
                       <Check className="h-2.5 w-2.5 text-[#F44097]" />
                     </div>
-                    <span className="text-[10px] text-white/40">photo_uploaded.jpg</span>
+                    <span className="text-[10px] text-[var(--page-text-muted)]">photo_uploaded.jpg</span>
                   </div>
                 </div>
 
                 {/* ── STEP 2: Write prompt ── */}
                 <div className="hero-step hero-step-2 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
-                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                  <div className="flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1">
                     <span className="text-[10px] font-semibold text-[#F44097]">Step 2</span>
-                    <span className="text-[10px] text-white/30">Describe your idea</span>
+                    <span className="text-[10px] text-[var(--page-text-muted)]">Describe your idea</span>
                   </div>
 
                   {/* Prompt typing area */}
-                  <div className="w-full max-w-[230px] rounded-xl border border-white/[0.08] bg-white/[0.02] p-3">
-                    <div className="text-[11px] leading-relaxed text-white/50 min-h-[48px]">
+                  <div className="w-full max-w-[230px] rounded-xl border border-[var(--surface-border-strong)] bg-[var(--input-bg)] p-3">
+                    <div className="text-[11px] leading-relaxed text-[var(--page-text-secondary)] min-h-[48px]">
                       <span className="hero-demo-type-1">Make it </span>
                       <span className="hero-demo-type-2">look like </span>
                       <span className="hero-demo-type-3">a watercolor </span>
@@ -127,28 +127,28 @@ const HeroBanner = () => {
 
                 {/* ── STEP 3: See result ── */}
                 <div className="hero-step hero-step-3 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
-                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                  <div className="flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1">
                     <span className="text-[10px] font-semibold text-[#F44097]">Step 3</span>
-                    <span className="text-[10px] text-white/30">Your result is ready</span>
+                    <span className="text-[10px] text-[var(--page-text-muted)]">Your result is ready</span>
                   </div>
 
                   {/* Result card */}
-                  <div className="hero-result-pop relative w-44 md:w-48 rounded-xl border border-white/[0.08] bg-[#16171a] overflow-hidden shadow-lg">
-                    <div className="aspect-[4/5] bg-gradient-to-br from-[#1a0a20] via-[#15101f] to-[#0d1520] flex items-center justify-center relative overflow-hidden">
+                  <div className="hero-result-pop relative w-44 md:w-48 rounded-xl border border-[var(--surface-border-strong)] bg-[var(--hero-result-bg)] overflow-hidden shadow-lg">
+                    <div className="aspect-[4/5] bg-gradient-to-br from-[var(--hero-img-from)] via-[var(--hero-img-via)] to-[var(--hero-img-to)] flex items-center justify-center relative overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-[#F44097]/10 via-transparent to-[#9333ea]/8" />
                       <div className="hero-result-shimmer absolute inset-0" />
                       <ImageIcon className="h-10 w-10 text-[#F44097]/20" />
                     </div>
                     <div className="flex items-center gap-1.5 px-3 py-2">
                       <div className="hero-dot h-1.5 w-1.5 rounded-full bg-[#F44097]" />
-                      <span className="text-[10px] font-medium text-white/50">AI Generated</span>
+                      <span className="text-[10px] font-medium text-[var(--page-text-secondary)]">AI Generated</span>
                     </div>
                   </div>
 
                   {/* Download hint */}
-                  <div className="hero-download-hint flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1">
+                  <div className="hero-download-hint flex items-center gap-1.5 rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-1">
                     <Check className="h-3 w-3 text-green-400/60" />
-                    <span className="text-[10px] text-white/35">Ready to download</span>
+                    <span className="text-[10px] text-[var(--page-text-muted)]">Ready to download</span>
                   </div>
                 </div>
               </div>
@@ -156,9 +156,9 @@ const HeroBanner = () => {
 
             {/* Step indicators — dots */}
             <div className="mt-4 flex items-center justify-center gap-2">
-              <div className="hero-dot-indicator hero-dot-ind-1 h-1.5 rounded-full bg-white/20" />
-              <div className="hero-dot-indicator hero-dot-ind-2 h-1.5 rounded-full bg-white/20" />
-              <div className="hero-dot-indicator hero-dot-ind-3 h-1.5 rounded-full bg-white/20" />
+              <div className="hero-dot-indicator hero-dot-ind-1 h-1.5 rounded-full bg-[var(--page-text-faint)]" />
+              <div className="hero-dot-indicator hero-dot-ind-2 h-1.5 rounded-full bg-[var(--page-text-faint)]" />
+              <div className="hero-dot-indicator hero-dot-ind-3 h-1.5 rounded-full bg-[var(--page-text-faint)]" />
             </div>
           </div>
 

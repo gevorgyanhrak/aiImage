@@ -22,7 +22,7 @@ const ErrorView = ({ onSelect, onError, message = DEFAULT_MESSAGE, multiplyEnabl
     <Frame dataTestId={TEST_IDS.ERROR}>
       <DraggableContainer extensions={extensions} type={type} onFileSelect={onSelect} onError={onError} multiplyEnabled={multiplyEnabled} tone="error">
         <div className="flex flex-col items-center gap-3 text-center px-4">
-          <div className="h-12 w-12 rounded-full bg-[#1A1A1A] flex items-center justify-center">
+          <div className="h-12 w-12 rounded-full bg-[var(--surface)] flex items-center justify-center">
             <Info className="h-6 w-6 text-destructive" />
           </div>
           <div className="space-y-2">

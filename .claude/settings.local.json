@@ -3,7 +3,17 @@
     "allow": [
       "Bash(npx tsc:*)",
       "Bash(npx vite:*)",
-      "WebFetch(domain:higgsfield.ai)"
+      "WebFetch(domain:higgsfield.ai)",
+      "WebFetch(domain:pollinations.ai)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(ls:*)",
+      "Bash(npm:*)",
+      "Bash(pnpm add:*)",
+      "WebSearch",
+      "WebFetch(domain:ai.google.dev)",
+      "Bash(/tmp/analysis.md:*)",
+      "Read(//tmp/**)"
     ]
   }
 }

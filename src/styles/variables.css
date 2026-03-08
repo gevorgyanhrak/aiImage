@@ -69,6 +69,10 @@
   --hero-card-bg: #111214;
   --hero-demo-bg: #0a0b0d;
   --hero-result-bg: #16171a;
+  --hero-img-from: #1a1225;
+  --hero-img-via: #15101f;
+  --hero-img-to: #0d1520;
+  --card-inner-bg: #121212;
 }
 
 .light {
@@ -109,6 +113,10 @@
   --hero-card-bg: #ffffff;
   --hero-demo-bg: #f0f0f2;
   --hero-result-bg: #f5f5f7;
+  --hero-img-from: #e8e0f0;
+  --hero-img-via: #ddd5e8;
+  --hero-img-to: #d0dce8;
+  --card-inner-bg: #ffffff;
 
   --neon-glow: 0 0 7px rgba(244, 64, 151, 0.35), 0 0 20px rgba(244, 64, 151, 0.1);
   --neon-glow-strong: 0 0 7px rgba(244, 64, 151, 0.45), 0 0 30px rgba(244, 64, 151, 0.15), 0 0 60px rgba(244, 64, 151, 0.05);

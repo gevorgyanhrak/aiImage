@@ -13,8 +13,10 @@ function loadTheme(): Theme {
 
 function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_KEY, theme);
-  document.documentElement.classList.toggle('dark', theme === 'dark');
-  document.documentElement.classList.toggle('light', theme === 'light');
+  const root = document.documentElement;
+  root.classList.toggle('dark', theme === 'dark');
+  root.classList.toggle('light', theme === 'light');
+  root.style.colorScheme = theme;
 }
 
 // Apply on load
@@ -32,36 +34,36 @@ const DEMO_USERS: Record<string, { password: string; user: User }> = {
       generations: [
         {
           id: 'gen-1',
-          prompt: 'Make it look like a watercolor painting',
-          resultUrl: 'https://picsum.photos/seed/gen1/400/500',
-          sourceUrl: 'https://picsum.photos/seed/src1/400/500',
+          prompt: 'A serene watercolor painting of a mountain lake at sunrise',
+          resultUrl: 'https://image.pollinations.ai/prompt/A%20serene%20watercolor%20painting%20of%20a%20mountain%20lake%20at%20sunrise?width=400&height=500&seed=101&nologo=true',
+          sourceUrl: 'https://image.pollinations.ai/prompt/mountain%20lake%20photograph?width=400&height=500&seed=201&nologo=true',
           createdAt: '2026-03-07T14:30:00Z',
         },
         {
           id: 'gen-2',
-          prompt: 'Transform into anime style with vibrant colors',
-          resultUrl: 'https://picsum.photos/seed/gen2/400/500',
-          sourceUrl: 'https://picsum.photos/seed/src2/400/500',
+          prompt: 'Anime style portrait with vibrant neon colors and cherry blossoms',
+          resultUrl: 'https://image.pollinations.ai/prompt/Anime%20style%20portrait%20with%20vibrant%20neon%20colors%20and%20cherry%20blossoms?width=400&height=500&seed=102&nologo=true',
+          sourceUrl: 'https://image.pollinations.ai/prompt/portrait%20photograph%20of%20a%20person?width=400&height=500&seed=202&nologo=true',
           createdAt: '2026-03-07T10:15:00Z',
         },
         {
           id: 'gen-3',
-          prompt: 'Add cinematic lighting and dramatic shadows',
-          resultUrl: 'https://picsum.photos/seed/gen3/400/500',
+          prompt: 'Cinematic dramatic lighting on a dark city street at night',
+          resultUrl: 'https://image.pollinations.ai/prompt/Cinematic%20dramatic%20lighting%20on%20a%20dark%20city%20street%20at%20night?width=400&height=500&seed=103&nologo=true',
           sourceUrl: null,
           createdAt: '2026-03-06T18:45:00Z',
         },
         {
           id: 'gen-4',
-          prompt: 'Create a cyberpunk neon portrait',
-          resultUrl: 'https://picsum.photos/seed/gen4/400/500',
-          sourceUrl: 'https://picsum.photos/seed/src4/400/500',
+          prompt: 'Cyberpunk neon portrait with glowing purple and blue lights',
+          resultUrl: 'https://image.pollinations.ai/prompt/Cyberpunk%20neon%20portrait%20with%20glowing%20purple%20and%20blue%20lights?width=400&height=500&seed=104&nologo=true',
+          sourceUrl: 'https://image.pollinations.ai/prompt/close%20up%20face%20photograph?width=400&height=500&seed=204&nologo=true',
           createdAt: '2026-03-06T09:20:00Z',
         },
         {
           id: 'gen-5',
-          prompt: 'Oil painting style with impressionist brush strokes',
-          resultUrl: 'https://picsum.photos/seed/gen5/400/500',
+          prompt: 'Oil painting of a sunflower field with impressionist brush strokes',
+          resultUrl: 'https://image.pollinations.ai/prompt/Oil%20painting%20of%20a%20sunflower%20field%20with%20impressionist%20brush%20strokes?width=400&height=500&seed=105&nologo=true',
           sourceUrl: null,
           createdAt: '2026-03-05T16:00:00Z',
         },

@@ -9,15 +9,22 @@ type UploadToCDNProps = {
   shouldGetMetadata?: boolean;
 };
 
+const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
+
 const uploadToCDN = async ({ sourceUrl, options }: UploadToCDNProps) => {
   const { onProgress } = options ?? {};
 
-  // Simulate upload progress
+  // Simulate realistic upload progress
   if (onProgress) {
-    onProgress(25);
-    onProgress(50);
-    onProgress(75);
+    onProgress(20);
+    await delay(300);
+    onProgress(60);
+    await delay(400);
+    onProgress(90);
+    await delay(200);
     onProgress(100);
+  } else {
+    await delay(500);
   }
 
   return {

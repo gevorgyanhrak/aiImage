@@ -21,10 +21,11 @@ body {
   font-family: var(--font-hrakai);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+html.dark {
+  color-scheme: dark;
+}
+html.light {
+  color-scheme: light;
 }
 
 html {
@@ -106,7 +107,7 @@ html {
 
 @layer components {
   .border-gradient-valentine {
-    background: linear-gradient(#121212, #121212) padding-box, var(--image-gradient-valentine) border-box;
+    background: linear-gradient(var(--card-inner-bg), var(--card-inner-bg)) padding-box, var(--image-gradient-valentine) border-box;
     border: 1px solid transparent;
   }
 
@@ -199,6 +200,11 @@ html {
       linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
     background-size: 40px 40px;
+  }
+  .light .hero-grid {
+    background-image:
+      linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
   }
 
   /* Card entrance */
@@ -334,6 +340,16 @@ html {
   .hero-dot-ind-1 { animation: hero-dot-active 12s ease-in-out infinite; }
   .hero-dot-ind-2 { animation: hero-dot-active 12s ease-in-out 4s infinite; }
   .hero-dot-ind-3 { animation: hero-dot-active 12s ease-in-out 8s infinite; }
+
+  /* Light mode hero dot indicators */
+  @keyframes hero-dot-active-light {
+    0%, 2%   { width: 6px; background: rgba(0,0,0,0.15); }
+    5%, 30%  { width: 16px; background: rgba(244,64,151,0.7); }
+    33%, 100% { width: 6px; background: rgba(0,0,0,0.15); }
+  }
+  .light .hero-dot-ind-1 { animation: hero-dot-active-light 12s ease-in-out infinite; }
+  .light .hero-dot-ind-2 { animation: hero-dot-active-light 12s ease-in-out 4s infinite; }
+  .light .hero-dot-ind-3 { animation: hero-dot-active-light 12s ease-in-out 8s infinite; }
 
   /* Step 1: Photo drops into upload zone */
   @keyframes hero-photo-drop {

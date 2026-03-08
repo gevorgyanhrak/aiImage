@@ -1,14 +1,17 @@
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Camera, Check, Eye, EyeOff } from 'lucide-react';
+import { Camera, Check, Eye, EyeOff, Sun, Moon } from 'lucide-react';
 import Header from '@/components/Header';
 import { useAppStore } from '@/store/store';
+import { cn } from '@/lib/utils';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const user = useAppStore(s => s.user);
   const updateProfile = useAppStore(s => s.updateProfile);
   const updatePassword = useAppStore(s => s.updatePassword);
+  const theme = useAppStore(s => s.theme);
+  const setTheme = useAppStore(s => s.setTheme);
 
   const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
@@ -179,6 +182,56 @@ const SettingsPage = () => {
                     {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
+              </div>
+            </section>
+
+            {/* ── Appearance ── */}
+            <section className="rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6">
+              <h2 className="text-[11px] font-medium tracking-[0.08em] uppercase text-[var(--label-color)] mb-4">Appearance</h2>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setTheme('dark')}
+                  className={cn(
+                    'flex-1 flex items-center gap-3 rounded-xl border-2 p-4 transition-all',
+                    theme === 'dark'
+                      ? 'border-[#F44097]/40 bg-[#F44097]/5'
+                      : 'border-[var(--surface-border)] bg-[var(--input-bg)] hover:border-[var(--surface-border-strong)]',
+                  )}
+                >
+                  <div className={cn(
+                    'flex h-9 w-9 items-center justify-center rounded-lg',
+                    theme === 'dark' ? 'bg-[#F44097]/10' : 'bg-[var(--surface)]',
+                  )}>
+                    <Moon className={cn('h-4 w-4', theme === 'dark' ? 'text-[#F44097]' : 'text-[var(--page-text-muted)]')} />
+                  </div>
+                  <div className="text-left">
+                    <p className={cn('text-sm font-medium', theme === 'dark' ? 'text-[var(--page-text)]' : 'text-[var(--page-text-secondary)]')}>Dark</p>
+                    <p className="text-[10px] text-[var(--page-text-muted)]">Dark background</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setTheme('light')}
+                  className={cn(
+                    'flex-1 flex items-center gap-3 rounded-xl border-2 p-4 transition-all',
+                    theme === 'light'
+                      ? 'border-[#F44097]/40 bg-[#F44097]/5'
+                      : 'border-[var(--surface-border)] bg-[var(--input-bg)] hover:border-[var(--surface-border-strong)]',
+                  )}
+                >
+                  <div className={cn(
+                    'flex h-9 w-9 items-center justify-center rounded-lg',
+                    theme === 'light' ? 'bg-[#F44097]/10' : 'bg-[var(--surface)]',
+                  )}>
+                    <Sun className={cn('h-4 w-4', theme === 'light' ? 'text-[#F44097]' : 'text-[var(--page-text-muted)]')} />
+                  </div>
+                  <div className="text-left">
+                    <p className={cn('text-sm font-medium', theme === 'light' ? 'text-[var(--page-text)]' : 'text-[var(--page-text-secondary)]')}>Light</p>
+                    <p className="text-[10px] text-[var(--page-text-muted)]">Light background</p>
+                  </div>
+                </button>
               </div>
             </section>
 

@@ -13,12 +13,12 @@ const UploadProgress = ({ title = DEFAULT_TITLE, subtitle = DEFAULT_SUBTITLE, pr
 
   return (
     <Box className={`rounded-2xl p6] ${className ?? ''}`} data-testid={TEST_IDS.CONTAINER}>
-      <Progress value={clamped} size="1" variant="surface" className="!bg-[#3B3B3B] w-full" style={{ '--accent-track': 'var(--primary)' } as CSSProperties} data-testid={TEST_IDS.BAR} />
+      <Progress value={clamped} size="1" variant="surface" className="!bg-[var(--surface-border-strong)] w-full" style={{ '--accent-track': 'var(--primary)' } as CSSProperties} data-testid={TEST_IDS.BAR} />
       <Flex direction="column" align="center" gap="1" className="mt-6 text-center">
         <Text as="p" size="3" className="!font-medium text-foreground" data-testid={TEST_IDS.TITLE}>
           {title}
         </Text>
-        <Text as="p" size="2" className="!font-medium text-[#B3B3B3]" data-testid={TEST_IDS.SUBTITLE}>
+        <Text as="p" size="2" className="!font-medium text-muted-foreground" data-testid={TEST_IDS.SUBTITLE}>
           {subtitle}
         </Text>
       </Flex>

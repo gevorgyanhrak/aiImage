@@ -35,7 +35,7 @@ const PreviewView = ({ url, onClear }: IPreviewView) => {
           type="button"
           onClick={onClear}
           aria-label="Remove image"
-          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-xl bg-[#1f1f1f]/90 text-foreground hover:bg-[#2a2a2a] shadow"
+          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--popup-bg)] backdrop-blur-sm text-foreground hover:bg-[var(--surface-hover)] shadow"
           data-testid={TEST_IDS.PREVIEW_REMOVE_BUTTON}
           data-pulse-name={PULSE_NAMES.REMOVE_BUTTON}
         >

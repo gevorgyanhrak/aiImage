@@ -25,7 +25,7 @@ const Card = ({ item, priority }: CardProps) => {
       <Link to={href} className="flex flex-col gap-3 group" data-pulse-name={title}>
         <LazyVideo src={videoUrl} priority={priority} title={title} poster={poster} width={width} height={height} sizes="(max-width: 640px) 12rem, 24rem" />
         <div className="flex flex-col">
-          <h3 className="text-start text-base font-semibold leading-6 text-white font-hrakai group-hover:text-primary transition-color duration-300">{title}</h3>
+          <h3 className="text-start text-base font-semibold leading-6 text-foreground font-hrakai group-hover:text-primary transition-color duration-300">{title}</h3>
           <p className="text-start text-sm font-normal leading-6 text-muted-foreground group-hover:text-primary transition-color duration-300">{description}</p>
         </div>
       </Link>

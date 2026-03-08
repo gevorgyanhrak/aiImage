@@ -74,6 +74,11 @@
       0 -4px 30px rgba(0, 0, 0, 0.5),
       0 -1px 0 rgba(244, 64, 151, 0.08);
   }
+  .light .quick-gen-shadow {
+    box-shadow:
+      0 -4px 30px rgba(0, 0, 0, 0.08),
+      0 -1px 0 rgba(244, 64, 151, 0.06);
+  }
 
   /* ── Quick Generate animations ── */
 

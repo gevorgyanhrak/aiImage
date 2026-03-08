@@ -4,12 +4,15 @@ import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, ImageIcon } from 
 import postJson from '@/utils/postJson';
 import uploadToCDN from '@/utils/uploadToCDN';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/store/store';
 
 type GenerateState = 'idle' | 'uploading' | 'generating' | 'done';
 
 const ACCEPT = 'image/png,image/jpeg,image/webp,image/heic,image/heif';
 
 const QuickGenerate = () => {
+  const addGeneration = useAppStore(s => s.addGeneration);
+  const isAuthenticated = useAppStore(s => s.isAuthenticated);
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<GenerateState>('idle');
   const [prompt, setPrompt] = useState('');
@@ -80,11 +83,20 @@ const QuickGenerate = () => {
 
       setResultUrl(url);
       setState('done');
+
+      // Save to user history if logged in
+      if (isAuthenticated) {
+        addGeneration({
+          prompt: prompt.trim(),
+          resultUrl: url,
+          sourceUrl: uploadedUrl,
+        });
+      }
     } catch {
       setError('Generation failed. Try again.');
       setState('idle');
     }
-  }, [prompt, uploadedUrl]);
+  }, [prompt, uploadedUrl, isAuthenticated, addGeneration]);
 
   const onReset = useCallback(() => {
     setResultUrl(null);
