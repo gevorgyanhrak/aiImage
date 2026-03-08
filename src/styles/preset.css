@@ -74,4 +74,68 @@
       0 -4px 30px rgba(0, 0, 0, 0.5),
       0 -1px 0 rgba(244, 64, 151, 0.08);
   }
+
+  /* ── Quick Generate animations ── */
+
+  /* Bar slides up on mount */
+  @keyframes quick-gen-slide-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .quick-gen-enter {
+    animation: quick-gen-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+  }
+
+  /* Sparkle icon — infinite gentle pulse when closed */
+  @keyframes quick-gen-sparkle-attract {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(244,64,151,0.2)); }
+    50% { transform: scale(1.2); filter: drop-shadow(0 0 8px rgba(244,64,151,0.6)); }
+  }
+  .quick-gen-sparkle-attract {
+    animation: quick-gen-sparkle-attract 2s ease-in-out infinite;
+  }
+
+  /* Chevron bounce — infinite when closed */
+  @keyframes quick-gen-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-3px); }
+  }
+  .quick-gen-bounce {
+    animation: quick-gen-bounce 2s ease-in-out infinite;
+  }
+
+  /* Subtle neon glow on the top border when closed */
+  @keyframes quick-gen-bar-glow {
+    0%, 100% { box-shadow: inset 0 1px 0 rgba(244,64,151,0.1), 0 -2px 12px rgba(244,64,151,0.04); }
+    50% { box-shadow: inset 0 1px 0 rgba(244,64,151,0.25), 0 -2px 20px rgba(244,64,151,0.1); }
+  }
+  .quick-gen-bar-glow {
+    position: relative;
+    animation: quick-gen-bar-glow 3s ease-in-out infinite;
+  }
+
+  /* Animated gradient line sweeping across the top edge */
+  .quick-gen-bar-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(244, 64, 151, 0.6) 25%,
+      rgba(252, 103, 250, 0.8) 50%,
+      rgba(244, 64, 151, 0.6) 75%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: quick-gen-gradient-sweep 3s ease-in-out infinite;
+  }
+
+  @keyframes quick-gen-gradient-sweep {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
 }

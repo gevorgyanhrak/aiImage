@@ -93,13 +93,17 @@ const QuickGenerate = () => {
     setState('idle');
   }, [clearImage]);
 
+  const onToggle = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
+
   const isGenerating = state === 'generating';
   const isUploading = state === 'uploading';
   const isDone = state === 'done';
   const canGenerate = (prompt.trim().length > 0 || uploadedUrl) && !isGenerating && !isUploading;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40">
+    <div className="fixed bottom-0 left-0 right-0 z-40 quick-gen-enter">
       {/* Panel */}
       <div
         className={cn(
@@ -107,15 +111,20 @@ const QuickGenerate = () => {
           isOpen ? 'quick-gen-shadow' : '',
         )}
       >
-        {/* Toggle bar — always visible */}
+        {/* Toggle bar */}
         <button
           type="button"
-          onClick={() => setIsOpen(prev => !prev)}
-          className="flex w-full items-center justify-between px-4 md:px-6 h-11 hover:bg-white/[0.02] transition-colors"
+          onClick={onToggle}
+          className={cn(
+            'flex w-full items-center justify-between px-4 md:px-6 h-11 transition-colors',
+            isOpen ? 'hover:bg-white/[0.02]' : 'quick-gen-bar-glow hover:bg-white/[0.02]',
+          )}
         >
           <div className="flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-[#F44097]" />
-            <span className="text-sm font-medium text-white/70">Quick Generate</span>
+            <Sparkles className={cn('h-3.5 w-3.5 text-[#F44097]', !isOpen && 'quick-gen-sparkle-attract')} />
+            <span className={cn('text-sm font-medium', isOpen ? 'text-white/70' : 'text-white/80')}>
+              Quick Generate
+            </span>
             {isGenerating && (
               <Loader2 className="h-3 w-3 animate-spin text-[#F44097]" />
             )}
@@ -123,11 +132,11 @@ const QuickGenerate = () => {
           {isOpen ? (
             <ChevronDown className="h-4 w-4 text-white/30" />
           ) : (
-            <ChevronUp className="h-4 w-4 text-white/30" />
+            <ChevronUp className="h-4 w-4 text-white/30 quick-gen-bounce" />
           )}
         </button>
 
-        {/* Expandable content — h-[150px] */}
+        {/* Expandable content */}
         <div
           className={cn(
             'overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Sparkles, Wand2, Layers, Zap, ArrowRight, Upload, Type, Image, Film, ArrowDown } from 'lucide-react';
+import { Sparkles, Wand2, Layers, Zap, ArrowRight, Upload, ImageIcon, Check } from 'lucide-react';
 
 const HeroBanner = () => {
   return (
@@ -49,101 +49,122 @@ const HeroBanner = () => {
           </div>
         </div>
 
-        {/* Right — AI generation flow visualization (50%) */}
-        <div className="relative overflow-hidden bg-[#0a0b0d] min-h-[340px] lg:min-h-0 flex items-center justify-center p-6 md:p-10">
-          {/* Animated glow blobs */}
+        {/* Right — Animated demo loop (50%) */}
+        <div className="relative overflow-hidden bg-[#0a0b0d] min-h-[360px] lg:min-h-[440px] flex items-center justify-center p-6 md:p-10">
+          {/* Background effects */}
           <div className="hero-blob-1 pointer-events-none absolute top-1/4 left-1/3 h-48 w-48 rounded-full bg-[#F44097]/12 blur-[90px]" />
           <div className="hero-blob-2 pointer-events-none absolute bottom-1/3 right-1/4 h-40 w-40 rounded-full bg-[#9333ea]/10 blur-[70px]" />
           <div className="hero-grid pointer-events-none absolute inset-0 opacity-[0.02]" />
 
-          {/* Generation flow — the full visual */}
-          <div className="hero-card-enter relative z-10 flex flex-col items-center gap-4 w-full max-w-xs">
-
-            {/* Step 1: Input card — photo + prompt */}
-            <div className="w-full rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 backdrop-blur-sm">
-              {/* Mock upload area */}
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-dashed border-white/10 bg-white/[0.03]">
-                  <Upload className="h-4.5 w-4.5 text-white/20" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="h-2 w-20 rounded-full bg-white/10" />
-                  <div className="mt-1.5 h-2 w-14 rounded-full bg-white/[0.05]" />
-                </div>
-                <div className="flex h-7 items-center rounded-md border border-white/[0.06] bg-white/[0.03] px-2 gap-1">
-                  <Image className="h-3 w-3 text-white/25" />
-                  <Film className="h-3 w-3 text-white/25" />
-                </div>
+          {/* Demo container — loops through 3 steps */}
+          <div className="relative z-10 w-full max-w-[300px]">
+            {/* Mock app window */}
+            <div className="rounded-xl border border-white/[0.08] bg-[#111214] shadow-2xl hero-image-glow overflow-hidden">
+              {/* Window title bar */}
+              <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/[0.04]">
+                <div className="h-2 w-2 rounded-full bg-white/10" />
+                <div className="h-2 w-2 rounded-full bg-white/10" />
+                <div className="h-2 w-2 rounded-full bg-white/10" />
+                <span className="ml-2 text-[9px] font-medium text-white/25">hrakAi Studio</span>
               </div>
 
-              {/* Mock prompt textarea */}
-              <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-                <div className="flex items-start gap-2">
-                  <Type className="mt-0.5 h-3 w-3 shrink-0 text-white/15" />
-                  <div className="flex-1">
-                    <span className="hero-typing text-[11px] leading-relaxed text-white/40">
-                      Turn my photo into anime style with cherry blossoms...
-                    </span>
+              {/* Step content — animated via CSS */}
+              <div className="relative h-[300px] md:h-[340px]">
+
+                {/* ── STEP 1: Upload photo ── */}
+                <div className="hero-step hero-step-1 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
+                  {/* Step label */}
+                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                    <span className="text-[10px] font-semibold text-[#F44097]">Step 1</span>
+                    <span className="text-[10px] text-white/30">Upload your photo</span>
+                  </div>
+
+                  {/* Upload animation */}
+                  <div className="hero-demo-upload relative flex h-28 w-28 items-center justify-center rounded-2xl border-2 border-dashed border-white/10 bg-white/[0.02]">
+                    <Upload className="h-8 w-8 text-white/15" />
+                    {/* Animated photo dropping in */}
+                    <div className="hero-photo-drop absolute inset-3 rounded-xl bg-gradient-to-br from-[#1a1225] to-[#15101f] border border-white/[0.08] flex items-center justify-center overflow-hidden">
+                      <ImageIcon className="h-6 w-6 text-[#F44097]/30" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#F44097]/5 to-transparent" />
+                    </div>
+                  </div>
+
+                  {/* Check mark appears */}
+                  <div className="hero-upload-check flex items-center gap-1.5">
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#F44097]/20">
+                      <Check className="h-2.5 w-2.5 text-[#F44097]" />
+                    </div>
+                    <span className="text-[10px] text-white/40">photo_uploaded.jpg</span>
+                  </div>
+                </div>
+
+                {/* ── STEP 2: Write prompt ── */}
+                <div className="hero-step hero-step-2 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
+                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                    <span className="text-[10px] font-semibold text-[#F44097]">Step 2</span>
+                    <span className="text-[10px] text-white/30">Describe your idea</span>
+                  </div>
+
+                  {/* Prompt typing area */}
+                  <div className="w-full max-w-[230px] rounded-xl border border-white/[0.08] bg-white/[0.02] p-3">
+                    <div className="text-[11px] leading-relaxed text-white/50 min-h-[48px]">
+                      <span className="hero-demo-type-1">Make it </span>
+                      <span className="hero-demo-type-2">look like </span>
+                      <span className="hero-demo-type-3">a watercolor </span>
+                      <span className="hero-demo-type-4">painting </span>
+                      <span className="hero-demo-type-5">with soft </span>
+                      <span className="hero-demo-type-6">pastel tones</span>
+                      <span className="hero-demo-cursor">|</span>
+                    </div>
+                  </div>
+
+                  {/* Generate button pulse */}
+                  <div className="hero-demo-btn flex h-9 items-center gap-2 rounded-lg bg-gradient-to-r from-[#F44097] to-[#FC67FA] px-5 shadow-[0_0_16px_rgba(244,64,151,0.3)]">
+                    <Sparkles className="h-3.5 w-3.5 text-white" />
+                    <span className="text-[12px] font-semibold text-white">Generate</span>
+                  </div>
+                </div>
+
+                {/* ── STEP 3: See result ── */}
+                <div className="hero-step hero-step-3 absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
+                  <div className="flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1">
+                    <span className="text-[10px] font-semibold text-[#F44097]">Step 3</span>
+                    <span className="text-[10px] text-white/30">Your result is ready</span>
+                  </div>
+
+                  {/* Result card */}
+                  <div className="hero-result-pop relative w-44 md:w-48 rounded-xl border border-white/[0.08] bg-[#16171a] overflow-hidden shadow-lg">
+                    <div className="aspect-[4/5] bg-gradient-to-br from-[#1a0a20] via-[#15101f] to-[#0d1520] flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#F44097]/10 via-transparent to-[#9333ea]/8" />
+                      <div className="hero-result-shimmer absolute inset-0" />
+                      <ImageIcon className="h-10 w-10 text-[#F44097]/20" />
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-2">
+                      <div className="hero-dot h-1.5 w-1.5 rounded-full bg-[#F44097]" />
+                      <span className="text-[10px] font-medium text-white/50">AI Generated</span>
+                    </div>
+                  </div>
+
+                  {/* Download hint */}
+                  <div className="hero-download-hint flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1">
+                    <Check className="h-3 w-3 text-green-400/60" />
+                    <span className="text-[10px] text-white/35">Ready to download</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Arrow connector with processing animation */}
-            <div className="flex flex-col items-center gap-1">
-              <div className="hero-processing-ring relative flex h-9 w-9 items-center justify-center">
-                <div className="absolute inset-0 rounded-full border border-white/[0.06]" />
-                <div className="hero-process-spin absolute inset-0 rounded-full border border-transparent border-t-[#F44097]/60" />
-                <Sparkles className="h-3.5 w-3.5 text-[#F44097] hero-icon-pulse" />
-              </div>
-              <ArrowDown className="h-3 w-3 text-white/15 hero-arrow-bounce" />
-            </div>
-
-            {/* Step 2: Result — generated output */}
-            <div className="hero-result-reveal w-full rounded-xl border border-white/[0.08] bg-[#111214] overflow-hidden shadow-2xl hero-image-glow">
-              {/* Fake generated image grid — 2 results */}
-              <div className="grid grid-cols-2 gap-px bg-white/[0.04]">
-                <div className="relative aspect-[4/5] bg-gradient-to-br from-[#1a0a1e] via-[#15101f] to-[#0d1520] overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#F44097]/8 to-[#9333ea]/6" />
-                  <div className="hero-shimmer absolute inset-0" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Image className="h-8 w-8 text-[#F44097]/15" />
-                  </div>
-                  <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                    <div className="hero-dot h-1 w-1 rounded-full bg-[#F44097]" />
-                    <span className="text-[8px] text-white/40">Style 1</span>
-                  </div>
-                </div>
-                <div className="relative aspect-[4/5] bg-gradient-to-br from-[#0d1520] via-[#12101a] to-[#1a0a14] overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-[#FC67FA]/6 to-[#F44097]/4" />
-                  <div className="hero-shimmer hero-shimmer-delay absolute inset-0" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Film className="h-8 w-8 text-[#FC67FA]/12" />
-                  </div>
-                  <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                    <div className="hero-dot h-1 w-1 rounded-full bg-[#FC67FA]" />
-                    <span className="text-[8px] text-white/40">Style 2</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom bar */}
-              <div className="flex items-center justify-between px-3 py-2 bg-[#111214]">
-                <div className="flex items-center gap-1.5">
-                  <Sparkles className="h-3 w-3 text-[#F44097]" />
-                  <span className="text-[10px] font-medium text-white/50">AI Generated</span>
-                </div>
-                <div className="flex items-center gap-1 rounded-md border border-white/[0.06] bg-white/[0.03] px-2 py-0.5">
-                  <span className="text-[9px] text-white/30">2 results</span>
-                </div>
-              </div>
+            {/* Step indicators — dots */}
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <div className="hero-dot-indicator hero-dot-ind-1 h-1.5 rounded-full bg-white/20" />
+              <div className="hero-dot-indicator hero-dot-ind-2 h-1.5 rounded-full bg-white/20" />
+              <div className="hero-dot-indicator hero-dot-ind-3 h-1.5 rounded-full bg-white/20" />
             </div>
           </div>
 
-          {/* Corner particles */}
+          {/* Particles */}
           <div className="hero-particle pointer-events-none absolute top-[12%] right-[10%] h-1 w-1 rounded-full bg-[#F44097]/40" />
           <div className="hero-particle-delay pointer-events-none absolute bottom-[18%] left-[12%] h-1.5 w-1.5 rounded-full bg-[#FC67FA]/30" />
-          <div className="hero-particle pointer-events-none absolute top-[65%] right-[15%] h-1 w-1 rounded-full bg-[#9333ea]/30" />
         </div>
       </div>
     </section>
