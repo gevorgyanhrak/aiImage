@@ -35,7 +35,7 @@ const HomePage = () => {
         <Tabs items={tabItems} />
       </Header>
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
-      <main className="min-h-screen bg-[#0a0a0a] text-white">
+      <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)]">
         <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-6">
           <HeroBanner />
 

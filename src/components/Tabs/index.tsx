@@ -110,8 +110,8 @@ const TabNavigation = ({ items }: TabNavigationProps) => {
                   'focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-ring',
                   'border-none bg-transparent',
                   isActive
-                    ? 'text-white'
-                    : 'text-[#666] hover:text-[#bbb] hover:bg-white/[0.04]',
+                    ? 'text-[var(--page-text)]'
+                    : 'text-[var(--page-text-muted)] hover:text-[var(--page-text-secondary)] hover:bg-[var(--surface)]',
                 )}
                 aria-current={isActive ? 'true' : undefined}
                 aria-controls={String(id)}

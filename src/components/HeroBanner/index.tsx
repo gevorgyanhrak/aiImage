@@ -3,23 +3,23 @@ import { Sparkles, Wand2, Layers, Zap, ArrowRight, Upload, ImageIcon, Check } fr
 
 const HeroBanner = () => {
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-[#0F1113] border border-white/[0.06]">
+    <section className="relative overflow-hidden rounded-2xl bg-[var(--page-bg-deep)] border border-[var(--surface-border)]">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {/* Left — Text content (50%) */}
         <div className="relative z-10 flex flex-col justify-center px-6 py-10 md:px-10 md:py-14 lg:px-12 lg:py-16">
-          <div className="hero-fade-up mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-1.5">
+          <div className="hero-fade-up mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--surface-border-strong)] bg-[var(--surface)] px-4 py-1.5">
             <Sparkles className="h-3.5 w-3.5 text-[#F44097] hero-icon-pulse" />
-            <span className="text-xs font-medium tracking-wide text-white/50">AI-Powered Creative Studio</span>
+            <span className="text-xs font-medium tracking-wide text-[var(--page-text-secondary)]">AI-Powered Creative Studio</span>
           </div>
 
-          <h1 className="hero-fade-up hero-delay-1 text-3xl font-bold leading-[1.1] tracking-[-0.02em] text-white md:text-4xl lg:text-5xl">
+          <h1 className="hero-fade-up hero-delay-1 text-3xl font-bold leading-[1.1] tracking-[-0.02em] text-[var(--page-text)] md:text-4xl lg:text-5xl">
             Create stunning visuals{' '}
             <span className="bg-gradient-to-r from-[#F44097] to-[#FC67FA] bg-clip-text text-transparent">
               with AI
             </span>
           </h1>
 
-          <p className="hero-fade-up hero-delay-2 mt-4 max-w-md text-[15px] leading-relaxed text-white/35">
+          <p className="hero-fade-up hero-delay-2 mt-4 max-w-md text-[15px] leading-relaxed text-[var(--page-text-secondary)]">
             Transform your ideas into images and videos in seconds. Upload a photo, describe your vision, and let AI do the magic.
           </p>
 
@@ -40,17 +40,17 @@ const HeroBanner = () => {
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5"
+                className="flex items-center gap-1.5 rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-1.5"
               >
                 <Icon className="h-3 w-3 text-[#F44097]/70" />
-                <span className="text-[11px] font-medium text-white/40">{label}</span>
+                <span className="text-[11px] font-medium text-[var(--page-text-secondary)]">{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Right — Animated demo loop (50%) */}
-        <div className="relative overflow-hidden bg-[#0a0b0d] min-h-[360px] lg:min-h-[440px] flex items-center justify-center p-6 md:p-10">
+        <div className="relative overflow-hidden bg-[var(--hero-demo-bg)] min-h-[360px] lg:min-h-[440px] flex items-center justify-center p-6 md:p-10">
           {/* Background effects */}
           <div className="hero-blob-1 pointer-events-none absolute top-1/4 left-1/3 h-48 w-48 rounded-full bg-[#F44097]/12 blur-[90px]" />
           <div className="hero-blob-2 pointer-events-none absolute bottom-1/3 right-1/4 h-40 w-40 rounded-full bg-[#9333ea]/10 blur-[70px]" />
@@ -59,13 +59,13 @@ const HeroBanner = () => {
           {/* Demo container — loops through 3 steps */}
           <div className="relative z-10 w-full max-w-[300px]">
             {/* Mock app window */}
-            <div className="rounded-xl border border-white/[0.08] bg-[#111214] shadow-2xl hero-image-glow overflow-hidden">
+            <div className="rounded-xl border border-[var(--surface-border-strong)] bg-[var(--hero-card-bg)] shadow-2xl hero-image-glow overflow-hidden">
               {/* Window title bar */}
-              <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/[0.04]">
-                <div className="h-2 w-2 rounded-full bg-white/10" />
-                <div className="h-2 w-2 rounded-full bg-white/10" />
-                <div className="h-2 w-2 rounded-full bg-white/10" />
-                <span className="ml-2 text-[9px] font-medium text-white/25">hrakAi Studio</span>
+              <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[var(--surface-border)]">
+                <div className="h-2 w-2 rounded-full bg-[var(--page-text-faint)]" />
+                <div className="h-2 w-2 rounded-full bg-[var(--page-text-faint)]" />
+                <div className="h-2 w-2 rounded-full bg-[var(--page-text-faint)]" />
+                <span className="ml-2 text-[9px] font-medium text-[var(--page-text-muted)]">hrakAi Studio</span>
               </div>
 
               {/* Step content — animated via CSS */}

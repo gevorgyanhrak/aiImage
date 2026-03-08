@@ -1,5 +1,24 @@
 import type { StateCreator } from 'zustand';
-import type { IAuthState, User, GenerationRecord } from './types';
+import type { IAuthState, User, GenerationRecord, Theme } from './types';
+
+const THEME_KEY = 'hrakai-theme';
+
+function loadTheme(): Theme {
+  try {
+    const v = localStorage.getItem(THEME_KEY);
+    if (v === 'light' || v === 'dark') return v;
+  } catch {}
+  return 'dark';
+}
+
+function applyTheme(theme: Theme) {
+  localStorage.setItem(THEME_KEY, theme);
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.classList.toggle('light', theme === 'light');
+}
+
+// Apply on load
+applyTheme(loadTheme());
 
 const DEMO_USERS: Record<string, { password: string; user: User }> = {
   'demo@hrakai.com': {
@@ -74,6 +93,7 @@ const persisted = loadPersistedUser();
 const useAuthStore: StateCreator<IAuthState> = (set, get) => ({
   user: persisted,
   isAuthenticated: !!persisted,
+  theme: loadTheme(),
 
   login: (email: string, password: string) => {
     const entry = DEMO_USERS[email];
@@ -132,6 +152,41 @@ const useAuthStore: StateCreator<IAuthState> = (set, get) => ({
     };
     persistUser(updated);
     set({ user: updated });
+  },
+
+  updateProfile: (updates) => {
+    const { user } = get();
+    if (!user) return;
+    const updated = { ...user, ...updates };
+    // Sync email key in DEMO_USERS if email changed
+    if (updates.email && updates.email !== user.email && DEMO_USERS[user.email]) {
+      const entry = DEMO_USERS[user.email];
+      delete DEMO_USERS[user.email];
+      DEMO_USERS[updates.email] = { ...entry, user: updated };
+    } else if (DEMO_USERS[updated.email]) {
+      DEMO_USERS[updated.email].user = updated;
+    }
+    persistUser(updated);
+    set({ user: updated });
+  },
+
+  updatePassword: (oldPassword: string, newPassword: string) => {
+    const { user } = get();
+    if (!user) return { success: false, error: 'Not logged in' };
+    const entry = DEMO_USERS[user.email];
+    if (!entry || entry.password !== oldPassword) {
+      return { success: false, error: 'Current password is incorrect' };
+    }
+    if (newPassword.length < 6) {
+      return { success: false, error: 'New password must be at least 6 characters' };
+    }
+    entry.password = newPassword;
+    return { success: true };
+  },
+
+  setTheme: (theme: Theme) => {
+    applyTheme(theme);
+    set({ theme });
   },
 });
 

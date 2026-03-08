@@ -107,7 +107,7 @@ const QuickGenerate = () => {
       {/* Panel */}
       <div
         className={cn(
-          'w-full bg-[#0F1113] border-t border-white/[0.06] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+          'w-full bg-[var(--page-bg-deep)] border-t border-[var(--surface-border)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
           isOpen ? 'quick-gen-shadow' : '',
         )}
       >
@@ -122,7 +122,7 @@ const QuickGenerate = () => {
         >
           <div className="flex items-center gap-2">
             <Sparkles className={cn('h-3.5 w-3.5 text-[#F44097]', !isOpen && 'quick-gen-sparkle-attract')} />
-            <span className={cn('text-sm font-medium', isOpen ? 'text-white/70' : 'text-white/80')}>
+            <span className={cn('text-sm font-medium', isOpen ? 'text-[var(--page-text-secondary)]' : 'text-[var(--page-text)]')}>
               Quick Generate
             </span>
             {isGenerating && (
@@ -130,9 +130,9 @@ const QuickGenerate = () => {
             )}
           </div>
           {isOpen ? (
-            <ChevronDown className="h-4 w-4 text-white/30" />
+            <ChevronDown className="h-4 w-4 text-[var(--page-text-muted)]" />
           ) : (
-            <ChevronUp className="h-4 w-4 text-white/30 quick-gen-bounce" />
+            <ChevronUp className="h-4 w-4 text-[var(--page-text-muted)] quick-gen-bounce" />
           )}
         </button>
 
@@ -143,11 +143,11 @@ const QuickGenerate = () => {
             isOpen ? 'max-h-[150px] opacity-100' : 'max-h-0 opacity-0',
           )}
         >
-          <div className="h-[150px] flex items-stretch border-t border-white/[0.04] px-4 md:px-6 gap-3 py-3">
+          <div className="h-[150px] flex items-stretch border-t border-[var(--surface-border)] px-4 md:px-6 gap-3 py-3">
             {/* Upload area */}
             <div className="shrink-0 w-[120px]">
               {previewUrl ? (
-                <div className="relative h-full rounded-lg overflow-hidden bg-black/40 border border-white/[0.06]">
+                <div className="relative h-full rounded-lg overflow-hidden bg-[var(--page-bg-inset)] border border-[var(--surface-border)]">
                   <img src={previewUrl} alt="Uploaded" className="h-full w-full object-cover" />
                   {isUploading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/60">
@@ -170,10 +170,10 @@ const QuickGenerate = () => {
                   onClick={() => inputRef.current?.click()}
                   onDragOver={e => e.preventDefault()}
                   onDrop={onDrop}
-                  className="flex h-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-dashed border-white/10 bg-white/[0.02] transition-colors hover:border-[#F44097]/30 hover:bg-[#F44097]/[0.02]"
+                  className="flex h-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-dashed border-[var(--surface-border-strong)] bg-[var(--input-bg)] transition-colors hover:border-[#F44097]/30 hover:bg-[#F44097]/[0.02]"
                 >
-                  <Upload className="h-4 w-4 text-white/25" />
-                  <span className="text-[10px] text-white/25 text-center leading-tight px-1">Upload image</span>
+                  <Upload className="h-4 w-4 text-[var(--page-text-muted)]" />
+                  <span className="text-[10px] text-[var(--page-text-muted)] text-center leading-tight px-1">Upload image</span>
                 </div>
               )}
               <input ref={inputRef} type="file" accept={ACCEPT} onChange={onFileInputChange} className="hidden" />
@@ -186,7 +186,7 @@ const QuickGenerate = () => {
                 onChange={e => setPrompt(e.target.value)}
                 placeholder="Describe what you want to create..."
                 rows={2}
-                className="flex-1 w-full resize-none rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white/90 placeholder:text-white/20 outline-none focus:border-white/15 transition-colors"
+                className="flex-1 w-full resize-none rounded-lg border border-[var(--input-border)] bg-[var(--input-bg)] px-3 py-2 text-sm text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] outline-none focus:border-[#F44097]/30 transition-colors"
               />
               <div className="flex items-center gap-2">
                 {error && <p className="text-[10px] text-red-400 truncate flex-1">{error}</p>}
@@ -195,7 +195,7 @@ const QuickGenerate = () => {
                     <button
                       type="button"
                       onClick={onReset}
-                      className="flex h-8 items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-medium text-white/60 hover:bg-white/[0.07] transition-colors"
+                      className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
                     >
                       New
                     </button>
@@ -226,7 +226,7 @@ const QuickGenerate = () => {
             </div>
 
             {/* Result preview */}
-            <div className="shrink-0 w-[120px] flex items-center justify-center rounded-lg bg-[#0a0b0d] border border-white/[0.04] overflow-hidden">
+            <div className="shrink-0 w-[120px] flex items-center justify-center rounded-lg bg-[var(--page-bg-inset)] border border-[var(--surface-border)] overflow-hidden">
               {isDone && resultUrl ? (
                 <img src={resultUrl} alt="Generated result" className="h-full w-full object-cover" />
               ) : isGenerating ? (
@@ -236,12 +236,12 @@ const QuickGenerate = () => {
                     <div className="absolute inset-0 rounded-full border border-transparent border-t-[#F44097] animate-spin" />
                     <Sparkles className="h-3 w-3 text-[#F44097]" />
                   </div>
-                  <span className="text-[9px] text-white/30">Generating</span>
+                  <span className="text-[9px] text-[var(--page-text-muted)]">Generating</span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-1">
-                  <ImageIcon className="h-5 w-5 text-white/10" />
-                  <span className="text-[9px] text-white/15 text-center px-1">Result</span>
+                  <ImageIcon className="h-5 w-5 text-[var(--page-text-faint)]" />
+                  <span className="text-[9px] text-[var(--page-text-faint)] text-center px-1">Result</span>
                 </div>
               )}
             </div>
