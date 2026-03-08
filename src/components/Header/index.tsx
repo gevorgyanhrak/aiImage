@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { LogIn, Moon, Sun } from 'lucide-react';
 
 import type { ReactNode } from 'react';
@@ -9,16 +9,27 @@ import { PULSE_NAMES } from '@/constants/pulseNames';
 import { useAppStore } from '@/store/store';
 import UserPopup from '@/components/UserPopup';
 import LoginModal from '@/components/LoginModal';
+import { cn } from '@/lib/utils';
 
 type HeaderProps = {
   children?: ReactNode;
 };
+
+const NAV_LINKS = [
+  { label: 'AI Effects', href: '/ai-effects' },
+  { label: 'Photo Editor', href: '/photo-editor' },
+  { label: 'Video Effects', href: '/video-effects' },
+  { label: 'AI Generate', href: '/ai-generate' },
+  { label: 'Design Tools', href: '/design-tools' },
+  { label: 'Face & Body', href: '/face-body' },
+];
 
 const Header = ({ children }: HeaderProps) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const isAuthenticated = useAppStore(s => s.isAuthenticated);
   const theme = useAppStore(s => s.theme);
   const setTheme = useAppStore(s => s.setTheme);
+  const { pathname } = useLocation();
 
   return (
     <>
@@ -44,12 +55,31 @@ const Header = ({ children }: HeaderProps) => {
           </span>
         </Link>
 
-        {/* Navigation slot — filled by Tabs on home page */}
-        {children && (
-          <div className="flex-1 min-w-0 ml-6 md:ml-10">
-            {children}
-          </div>
-        )}
+        {/* Navigation */}
+        <nav className="flex-1 min-w-0 ml-6 md:ml-10 overflow-x-auto scrollbar-hide">
+          {children || (
+            <ul className="flex items-center gap-1 md:gap-1.5">
+              {NAV_LINKS.map(({ label, href }) => {
+                const isActive = pathname === href || pathname.startsWith(href + '/');
+                return (
+                  <li key={href} className="list-none shrink-0">
+                    <Link
+                      to={href}
+                      className={cn(
+                        'px-3 py-1.5 text-[13px] font-medium tracking-wide rounded-md transition-all duration-200 whitespace-nowrap',
+                        isActive
+                          ? 'text-[var(--page-text)]'
+                          : 'text-[var(--page-text-muted)] hover:text-[var(--page-text-secondary)] hover:bg-[var(--surface)]',
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </nav>
 
         {/* Theme toggle + Auth */}
         <div className="shrink-0 ml-4 flex items-center gap-2">

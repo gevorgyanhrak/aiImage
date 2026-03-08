@@ -137,9 +137,8 @@ const DetailPage = () => {
         };
 
   return (
-    <>
-    <Header />
     <Theme>
+    <Header />
       <Helmet>
         <title>{seoSettings?.title || `${title} - ${SITE_NAME}`}</title>
         {seoSettings?.metaDescription && <meta name="description" content={seoSettings.metaDescription} />}
@@ -263,7 +262,6 @@ const DetailPage = () => {
         </div>
       </main>
     </Theme>
-    </>
   );
 };
 

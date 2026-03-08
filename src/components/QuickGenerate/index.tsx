@@ -1,10 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, ImageIcon, Download } from 'lucide-react';
+import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, Download, RotateCcw } from 'lucide-react';
 
 import postJson from '@/utils/postJson';
 import uploadToCDN from '@/utils/uploadToCDN';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/store';
+import LoginModal from '@/components/LoginModal';
 
 type GenerateState = 'idle' | 'uploading' | 'generating' | 'done';
 
@@ -14,6 +15,7 @@ const QuickGenerate = () => {
   const addGeneration = useAppStore(s => s.addGeneration);
   const isAuthenticated = useAppStore(s => s.isAuthenticated);
   const [isOpen, setIsOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [state, setState] = useState<GenerateState>('idle');
   const [prompt, setPrompt] = useState('');
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
@@ -67,6 +69,11 @@ const QuickGenerate = () => {
   const onGenerate = useCallback(async () => {
     if (!prompt.trim() && !uploadedUrl) return;
 
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
+
     try {
       setState('generating');
       setError(null);
@@ -84,7 +91,6 @@ const QuickGenerate = () => {
       setResultUrl(url);
       setState('done');
 
-      // Save to user history if logged in
       if (isAuthenticated) {
         addGeneration({
           prompt: prompt.trim(),
@@ -116,7 +122,6 @@ const QuickGenerate = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 quick-gen-enter">
-      {/* Panel */}
       <div
         className={cn(
           'w-full bg-[var(--page-bg-deep)] border-t border-[var(--surface-border)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
@@ -152,125 +157,134 @@ const QuickGenerate = () => {
         <div
           className={cn(
             'overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-            isOpen ? 'max-h-[150px] opacity-100' : 'max-h-0 opacity-0',
+            isOpen ? 'max-h-[90vh] md:max-h-[50vh] opacity-100' : 'max-h-0 opacity-0',
           )}
         >
-          <div className="h-[150px] flex items-stretch border-t border-[var(--surface-border)] px-4 md:px-6 gap-3 py-3">
-            {/* Upload area */}
-            <div className="shrink-0 w-[120px]">
-              {previewUrl ? (
-                <div className="relative h-full rounded-lg overflow-hidden bg-[var(--page-bg-inset)] border border-[var(--surface-border)]">
-                  <img src={previewUrl} alt="Uploaded" className="h-full w-full object-cover" />
-                  {isUploading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                      <Loader2 className="h-5 w-5 animate-spin text-[#F44097]" />
+          <div className="h-[calc(90vh-44px)] md:h-[calc(50vh-44px)] border-t border-[var(--surface-border)] flex flex-col md:flex-row">
+
+            {/* ── Image area (upload → generating → result) ── */}
+            <div className="flex-1 flex flex-col gap-1.5 p-3 md:p-4 min-h-0">
+              <span className="text-[10px] font-medium tracking-[0.08em] uppercase text-[var(--label-color)] px-0.5">
+                {isDone ? 'Result' : isGenerating ? 'Generating...' : previewUrl ? 'Source' : 'Upload'}
+              </span>
+              <div className="flex-1 min-h-0 relative">
+                {isDone && resultUrl ? (
+                  /* ── Result ── */
+                  <div className="relative h-full w-full rounded-xl overflow-hidden bg-[var(--page-bg-inset)] border border-[var(--surface-border)]">
+                    <img src={resultUrl} alt="Generated result" className="h-full w-full object-contain" />
+                    <a
+                      href={resultUrl}
+                      download="hrakai-generated.png"
+                      className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-black/60 backdrop-blur-sm text-white/70 hover:text-white hover:bg-black/80 transition-colors"
+                    >
+                      <Download className="h-4 w-4" />
+                    </a>
+                  </div>
+                ) : isGenerating ? (
+                  /* ── Generating spinner ── */
+                  <div className="h-full w-full rounded-xl overflow-hidden bg-[var(--page-bg-inset)] border border-[var(--surface-border)] flex flex-col items-center justify-center gap-4">
+                    <div className="relative flex h-16 w-16 items-center justify-center">
+                      <div className="absolute inset-0 rounded-full border-2 border-white/[0.06]" />
+                      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#F44097] animate-spin" />
+                      <Sparkles className="h-6 w-6 text-[#F44097]" />
                     </div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={clearImage}
-                    className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded bg-black/70 text-white/60 hover:text-white transition-colors"
-                    aria-label="Remove image"
+                    <div className="text-center">
+                      <p className="text-sm font-medium text-[var(--page-text)]">Generating your image</p>
+                      <p className="text-xs text-[var(--page-text-muted)] mt-1">This may take a few seconds...</p>
+                    </div>
+                  </div>
+                ) : previewUrl ? (
+                  /* ── Uploaded image preview ── */
+                  <div className="relative h-full w-full rounded-xl overflow-hidden bg-[var(--page-bg-inset)] border border-[var(--surface-border)]">
+                    <img src={previewUrl} alt="Uploaded" className="h-full w-full object-contain" />
+                    {isUploading && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                        <Loader2 className="h-8 w-8 animate-spin text-[#F44097]" />
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      onClick={clearImage}
+                      className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-black/60 backdrop-blur-sm text-white/70 hover:text-white hover:bg-black/80 transition-colors"
+                      aria-label="Remove image"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  /* ── Empty upload zone ── */
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => inputRef.current?.click()}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={onDrop}
+                    className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-[var(--surface-border-strong)] bg-[var(--input-bg)] transition-all hover:border-[#F44097]/40 hover:bg-[#F44097]/[0.03]"
                   >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => inputRef.current?.click()}
-                  onDragOver={e => e.preventDefault()}
-                  onDrop={onDrop}
-                  className="flex h-full cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border-[1.5px] border-dashed border-[var(--surface-border-strong)] bg-[var(--input-bg)] transition-colors hover:border-[#F44097]/30 hover:bg-[#F44097]/[0.02]"
-                >
-                  <Upload className="h-4 w-4 text-[var(--page-text-muted)]" />
-                  <span className="text-[10px] text-[var(--page-text-muted)] text-center leading-tight px-1">Upload image</span>
-                </div>
-              )}
-              <input ref={inputRef} type="file" accept={ACCEPT} onChange={onFileInputChange} className="hidden" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface)] border border-[var(--surface-border)]">
+                      <Upload className="h-6 w-6 text-[var(--page-text-muted)]" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-medium text-[var(--page-text-secondary)]">Upload an image</p>
+                      <p className="text-xs text-[var(--page-text-muted)] mt-1">or drag & drop here</p>
+                    </div>
+                  </div>
+                )}
+                <input ref={inputRef} type="file" accept={ACCEPT} onChange={onFileInputChange} className="hidden" />
+              </div>
             </div>
 
-            {/* Prompt + Generate */}
-            <div className="flex-1 flex flex-col gap-2 min-w-0">
+            {/* ── Controls column ── */}
+            <div className="md:w-[320px] lg:w-[380px] shrink-0 flex flex-col gap-3 p-3 md:p-4 md:pl-0 md:border-l-0 border-t md:border-t-0">
               <textarea
                 value={prompt}
                 onChange={e => setPrompt(e.target.value)}
                 placeholder="Describe what you want to create..."
-                rows={2}
-                className="flex-1 w-full resize-none rounded-lg border border-[var(--input-border)] bg-[var(--input-bg)] px-3 py-2 text-sm text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] outline-none focus:border-[#F44097]/30 transition-colors"
+                className="flex-1 w-full min-h-[60px] resize-none rounded-xl border border-[var(--input-border)] bg-[var(--input-bg)] px-4 py-3 text-sm text-[var(--input-text)] placeholder:text-[var(--input-placeholder)] outline-none focus:border-[#F44097]/30 transition-colors"
               />
-              <div className="flex items-center gap-2">
-                {error && <p className="text-[10px] text-red-400 truncate flex-1">{error}</p>}
-                <div className="ml-auto flex gap-2">
-                  {isDone && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={onReset}
-                        className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
-                      >
-                        New
-                      </button>
-                      {resultUrl && (
-                        <a
-                          href={resultUrl}
-                          download="hrakai-generated.png"
-                          className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
-                        >
-                          <Download className="h-3.5 w-3.5" />
-                        </a>
-                      )}
-                    </>
-                  )}
+
+              {error && (
+                <p className="text-[11px] text-red-400 bg-red-400/5 border border-red-400/10 rounded-lg px-3 py-1.5">{error}</p>
+              )}
+
+              <div className="flex gap-2">
+                {isDone && (
                   <button
                     type="button"
-                    onClick={onGenerate}
-                    disabled={!canGenerate}
-                    className={cn(
-                      'flex h-8 items-center gap-1.5 rounded-lg px-4 text-xs font-semibold transition-all',
-                      'bg-gradient-to-r from-[#F44097] to-[#FC67FA] text-white',
-                      'shadow-[0_0_12px_rgba(244,64,151,0.2)] hover:shadow-[0_0_20px_rgba(244,64,151,0.35)]',
-                      'active:translate-y-px',
-                      !canGenerate && 'opacity-30 pointer-events-none',
-                    )}
+                    onClick={onReset}
+                    className="flex h-11 items-center justify-center gap-2 rounded-xl border border-[var(--surface-border-strong)] bg-[var(--surface)] px-4 text-sm font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
                   >
-                    {isGenerating ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <>
-                        <Sparkles className="h-3.5 w-3.5" />
-                        Generate
-                      </>
-                    )}
+                    <RotateCcw className="h-4 w-4" />
+                    New
                   </button>
-                </div>
+                )}
+                <button
+                  type="button"
+                  onClick={onGenerate}
+                  disabled={!canGenerate}
+                  className={cn(
+                    'flex-1 flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all',
+                    'bg-gradient-to-r from-[#F44097] to-[#FC67FA] text-white',
+                    'shadow-[0_0_20px_rgba(244,64,151,0.2)] hover:shadow-[0_0_32px_rgba(244,64,151,0.35)]',
+                    'active:translate-y-px',
+                    !canGenerate && 'opacity-30 pointer-events-none',
+                  )}
+                >
+                  {isGenerating ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4" />
+                      Generate
+                    </>
+                  )}
+                </button>
               </div>
-            </div>
-
-            {/* Result preview */}
-            <div className="shrink-0 w-[120px] flex items-center justify-center rounded-lg bg-[var(--page-bg-inset)] border border-[var(--surface-border)] overflow-hidden">
-              {isDone && resultUrl ? (
-                <img src={resultUrl} alt="Generated result" className="h-full w-full object-cover" />
-              ) : isGenerating ? (
-                <div className="flex flex-col items-center gap-1.5">
-                  <div className="relative flex h-8 w-8 items-center justify-center">
-                    <div className="absolute inset-0 rounded-full border border-white/[0.06]" />
-                    <div className="absolute inset-0 rounded-full border border-transparent border-t-[#F44097] animate-spin" />
-                    <Sparkles className="h-3 w-3 text-[#F44097]" />
-                  </div>
-                  <span className="text-[9px] text-[var(--page-text-muted)]">Generating</span>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-1">
-                  <ImageIcon className="h-5 w-5 text-[var(--page-text-faint)]" />
-                  <span className="text-[9px] text-[var(--page-text-faint)] text-center px-1">Result</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
+      <LoginModal open={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </div>
   );
 };
