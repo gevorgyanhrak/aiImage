@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { Theme } from '@radix-ui/themes';
+import { Download, RotateCcw, Sparkles } from 'lucide-react';
 
 import Header from '@/components/Header';
 import Media from '@/components/Media';
@@ -18,6 +20,7 @@ import CUSTOM_BREADCRUMB_TITLE from '@/constants/customBreadcrumbTitle';
 import ItemsAndFooterWrapper from '@/components/ItemsAndFooterWrapper';
 import { SITE_NAME } from '@/constants/seo';
 import { PlaybackMode } from '@/types/media';
+import { useAppStore, getAppStore } from '@/store/store';
 
 import type { Media as MediaPropsType, VideoMedia } from '@/types/media';
 import type { SectionItemWithFlow } from '@/types/sectionItem';
@@ -30,6 +33,13 @@ const DetailPage = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
   const [searchParams] = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
+  const resultUrl = useAppStore(s => s.resultUrl);
+  const isGenerating = useAppStore(s => s.isGenerating);
+
+  // Clear result when navigating to a different page
+  useEffect(() => {
+    getAppStore().setResultUrl(null);
+  }, [category, id]);
 
   if (!category || !id) return null;
 
@@ -188,23 +198,63 @@ const DetailPage = () => {
               />
             </div>
 
-            {/* Right panel — media preview */}
+            {/* Right panel — media preview / result */}
             <div className="order-1 lg:order-2 flex flex-col gap-4 self-start lg:sticky lg:top-20">
-              <span className="detail-label px-1">Preview</span>
+              <span className="detail-label px-1">{resultUrl ? 'Result' : isGenerating ? 'Generating...' : 'Preview'}</span>
               <div
-                className="detail-media-wrap w-full h-[220px] md:h-[400px] lg:h-[560px] flex items-center justify-center"
+                className="detail-media-wrap w-full h-[220px] md:h-[400px] lg:h-[560px] flex items-center justify-center relative overflow-hidden"
                 data-testid={TEST_IDS.MEDIA_PREVIEW}
               >
-                <Media
-                  playbackMode={PlaybackMode.Instant}
-                  item={mediaItem}
-                  priority
-                  className="w-full h-full"
-                  mediaClassName="object-contain"
-                  isWithBackground
-                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 35vw, 40rem"
-                />
+                {resultUrl ? (
+                  <img
+                    src={resultUrl}
+                    alt="Generated result"
+                    className="w-full h-full object-contain"
+                  />
+                ) : isGenerating ? (
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative flex h-16 w-16 items-center justify-center">
+                      <div className="absolute inset-0 rounded-full border-2 border-white/[0.06]" />
+                      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#F44097] animate-spin" />
+                      <Sparkles className="h-6 w-6 text-[#F44097]" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-medium text-[var(--page-text)]">Generating your image</p>
+                      <p className="text-xs text-[var(--page-text-muted)] mt-1">This may take a few seconds...</p>
+                    </div>
+                  </div>
+                ) : (
+                  <Media
+                    playbackMode={PlaybackMode.Instant}
+                    item={mediaItem}
+                    priority
+                    className="w-full h-full"
+                    mediaClassName="object-contain"
+                    isWithBackground
+                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, (max-width: 1440px) 35vw, 40rem"
+                  />
+                )}
               </div>
+              {resultUrl && (
+                <div className="flex gap-2">
+                  <a
+                    href={resultUrl}
+                    download="hrakai-generated.png"
+                    className="flex-1 flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F44097] to-[#FC67FA] text-sm font-semibold text-white shadow-[0_0_20px_rgba(244,64,151,0.2)] hover:shadow-[0_0_32px_rgba(244,64,151,0.35)] active:translate-y-px transition-all"
+                  >
+                    <Download className="h-4 w-4" />
+                    Download
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => getAppStore().setResultUrl(null)}
+                    className="flex h-11 items-center justify-center gap-2 rounded-xl border border-[var(--surface-border-strong)] bg-[var(--surface)] px-4 text-sm font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    New
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

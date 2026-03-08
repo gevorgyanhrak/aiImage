@@ -4,6 +4,8 @@ import type { IPreviewImage, IPreviewState } from './types';
 const usePreviewStore: StateCreator<IPreviewState> = (set, get) => ({
   preview: {},
   textItems: {},
+  resultUrl: null,
+  isGenerating: false,
 
   setPreview: ({ id, mediaUrl, sourceUrl, type, width, height }: IPreviewImage) =>
     set(state => ({
@@ -15,12 +17,14 @@ const usePreviewStore: StateCreator<IPreviewState> = (set, get) => ({
       delete nextPreview[id];
       return { preview: nextPreview };
     }),
-  clearAll: () => set(() => ({ preview: {}, textItems: {} })),
+  clearAll: () => set(() => ({ preview: {}, textItems: {}, resultUrl: null, isGenerating: false })),
 
   getPreviewSource: ({ id }: { id: string }) => get().preview[id]?.sourceUrl ?? null,
   getPreviewMedia: ({ id }: { id: string }) => get().preview[id]?.mediaUrl ?? null,
   getPreviewsByIds: ({ ids }: { ids: string[] }) => ids.map(id => get().preview[id]).filter(Boolean) as IPreviewImage[],
   setTextItem: ({ key, value }: { key: string; value: string }) => set(state => ({ textItems: { ...state.textItems, [key]: value } })),
+  setResultUrl: (url: string | null) => set({ resultUrl: url }),
+  setIsGenerating: (value: boolean) => set({ isGenerating: value }),
 });
 
 export default usePreviewStore;

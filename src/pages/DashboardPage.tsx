@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router';
-import { Sparkles, Coins, ImageIcon, Clock, LogOut, ArrowRight } from 'lucide-react';
+import { Sparkles, Coins, ImageIcon, Clock, LogOut, ArrowRight, Download } from 'lucide-react';
 import Header from '@/components/Header';
 import { useAppStore } from '@/store/store';
 
@@ -130,9 +130,18 @@ const DashboardPage = () => {
                       <p className="text-sm text-[var(--page-text-secondary)] leading-relaxed line-clamp-2">{gen.prompt}</p>
                       <p className="text-[10px] text-[var(--page-text-muted)] mt-1">{formatDate(gen.createdAt)}</p>
                     </div>
-                    <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-[var(--surface-border)] bg-[var(--page-bg-inset)] relative">
+                    <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-[var(--surface-border)] bg-[var(--page-bg-inset)]">
                       <img src={gen.resultUrl} alt="Result" className="h-full w-full object-cover" />
                     </div>
+                    <a
+                      href={gen.resultUrl}
+                      download={`hrakai-${gen.id}.png`}
+                      onClick={e => e.stopPropagation()}
+                      className="shrink-0 flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] text-[var(--page-text-muted)] hover:text-[#F44097] hover:border-[#F44097]/30 hover:bg-[#F44097]/5 transition-colors self-center"
+                      aria-label="Download image"
+                    >
+                      <Download className="h-4 w-4" />
+                    </a>
                   </div>
                 ))}
               </div>

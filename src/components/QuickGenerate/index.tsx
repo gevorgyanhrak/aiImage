@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, ImageIcon } from 'lucide-react';
+import { Sparkles, Upload, X, ChevronDown, ChevronUp, Loader2, ImageIcon, Download } from 'lucide-react';
 
 import postJson from '@/utils/postJson';
 import uploadToCDN from '@/utils/uploadToCDN';
@@ -204,13 +204,24 @@ const QuickGenerate = () => {
                 {error && <p className="text-[10px] text-red-400 truncate flex-1">{error}</p>}
                 <div className="ml-auto flex gap-2">
                   {isDone && (
-                    <button
-                      type="button"
-                      onClick={onReset}
-                      className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
-                    >
-                      New
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        onClick={onReset}
+                        className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
+                      >
+                        New
+                      </button>
+                      {resultUrl && (
+                        <a
+                          href={resultUrl}
+                          download="hrakai-generated.png"
+                          className="flex h-8 items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                    </>
                   )}
                   <button
                     type="button"

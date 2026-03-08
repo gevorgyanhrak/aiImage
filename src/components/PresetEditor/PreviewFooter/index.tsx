@@ -3,25 +3,14 @@ import { Sparkles } from 'lucide-react';
 import { Flex } from '@radix-ui/themes';
 
 import { Button } from '@/components/ui/button';
-import { useAppStore } from '@/store/store';
+import { useAppStore, getAppStore } from '@/store/store';
 import LoginModal from '@/components/LoginModal';
 import postJson from '@/utils/postJson';
-import { AI_IMAGE_BASE_URL } from '@/constants/globals';
-import redirectToExternalDomain from '@/utils/redirectToExternalDomain';
-import checkIsMobile from '@/utils/checkIsMobile';
-import { MediaType } from '@/types/media';
-import buildPreset from '@/utils/buildPreset';
-import type { LandingTextItem, LandingUploadItem, Transformation } from '@/types/landing';
+import type { LandingTextItem } from '@/types/landing';
 import { TEST_IDS } from './constants/testIds';
-import type { IPreviewImage, IPreviewState } from '@/store/preview';
-import { getPresetGenMiniappContent } from '@/constants/presetGenMiniappContent';
-import type { InputItemType } from '@/types/presetGenMiniappContent';
-import { AD_URL_PARAMS } from '@/constants/analytics';
-import type { SectionItemWithFlow } from '@/types/sectionItem';
+import type { IPreviewState } from '@/store/preview';
 import { PULSE_NAMES } from '@/constants/pulseNames';
 import { cn } from '@/lib/utils';
-import sendFacebookPixelEvent from '@/utils/sendFacebookPixelEvent';
-import { FacebookPixelEvent } from '@/types/facebookPixel';
 
 interface IPreviewFooter {
   id: number;
@@ -31,48 +20,23 @@ interface IPreviewFooter {
   redirectionUrl: string;
   textItemsData: LandingTextItem[];
   ids: string[];
-  media: SectionItemWithFlow;
-  transformations?: Transformation[];
   scrollOnEmptyInput: () => void;
   category: string;
+  // keep unused props in interface for compatibility
+  media?: unknown;
+  transformations?: unknown;
 }
-
-const getFlowInputItems = (previews: IPreviewImage[], uploadItems?: LandingUploadItem[], textItems?: Record<string, string>) => {
-  const previewItems = uploadItems
-    ? previews.map(preview => {
-        const uploadItem = uploadItems.find(item => String(item.id) === String(preview.id));
-        return {
-          src: preview.sourceUrl ?? '',
-          title: uploadItem?.title ?? '',
-          id: String(uploadItem?.id),
-          width: preview.width ?? 0,
-          height: preview.height ?? 0,
-          type: uploadItem?.type as unknown as InputItemType,
-        };
-      })
-    : [];
-
-  const textEntries = Object.entries(textItems ?? {});
-  const texts = textEntries.length
-    ? textEntries.map(([key, value]) => ({
-        type: 'text' as const,
-        id: key,
-        value,
-      }))
-    : [];
-
-  return [...previewItems, ...texts];
-};
 
 const selector = (state: IPreviewState, ids: string[]) => ({
   selectedPreviews: state.getPreviewsByIds({ ids }),
   textItems: state.textItems,
 });
 
-const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prompt, textItemsData, ids, media, transformations, category, scrollOnEmptyInput }: IPreviewFooter) => {
+const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, prompt, textItemsData, ids, scrollOnEmptyInput }: IPreviewFooter) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const isAuthenticated = useAppStore(s => s.isAuthenticated);
+  const addGeneration = useAppStore(s => s.addGeneration);
   const { textItems, selectedPreviews } = useAppStore(state => selector(state, ids));
 
   const uploadedCount = selectedPreviews.map(preview => preview?.mediaUrl).filter(Boolean).length;
@@ -93,72 +57,45 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
 
     try {
       setIsLoading(true);
+      getAppStore().setResultUrl(null);
+      getAppStore().setIsGenerating(true);
+
       const uploadedMedia = selectedPreviews
         .filter(preview => preview?.sourceUrl)
         .map(preview => ({
           sourceUrl: preview.sourceUrl,
           type: preview.type,
         }));
-      const isMobile = await checkIsMobile();
-      const target = isMobile ? '_self' : '_blank';
 
-      if (!uploadedMedia.length && !Object.values(textItems).length) {
-        throw new Error('No media uploaded or one of text areas is empty');
-      }
+      // Build the final prompt including any text inputs
+      const textValues = Object.values(textItems).filter(Boolean);
+      const finalPrompt = [prompt, ...textValues].filter(Boolean).join('. ');
 
-      if (redirectionUrl.includes('ai-try-on')) {
-        const finalRedirectionUrl = `${AI_IMAGE_BASE_URL}${redirectionUrl}${uploadedMedia[0].sourceUrl}`;
-        redirectToExternalDomain({ href: finalRedirectionUrl, target });
-        return;
-      }
-      const needToBuildPresets = media && transformations;
-      const preset = needToBuildPresets ? buildPreset({ media, transformations, prompt }) : null;
+      const payload: Record<string, unknown> = {
+        prompt: finalPrompt,
+        ...(uploadedMedia.length && { media: uploadedMedia }),
+      };
 
-      const payload: Record<string, unknown> =
-        media.flow?.uploadItems || Object.keys(textItems).length
-          ? {
-              ...getPresetGenMiniappContent({
-                resultType: media.type,
-                webhookId: media.flow?.webhookId ?? '',
-                category,
-                previewMedia: {
-                  src: media.media.url,
-                  type: media.type,
-                  title: media.title,
-                  description: media.description,
-                  ...(media.type === MediaType.VIDEO && media.media.poster ? { poster: media.media.poster } : {}),
-                },
-                inputs: getFlowInputItems(selectedPreviews, media.flow?.uploadItems, textItems),
-              }),
-            }
-          : {
-              media: uploadedMedia,
-              prompt,
-              ...(preset && { preset }),
-            };
       const { response } = await postJson(payload);
+      const resultUrl = response?.url || response?.download_url;
 
-      const result = response?.url || response?.download_url;
+      if (!resultUrl) throw new Error('No result');
 
-      if (!result) throw new Error('No result');
+      getAppStore().setResultUrl(resultUrl);
 
-      const adParams = AD_URL_PARAMS.reduce((acc, param) => {
-        const value = sessionStorage.getItem(param);
-
-        if (value) acc += `&${param}=${value}`;
-
-        return acc;
-      }, '');
-
-      const finalRedirectionUrl = `${AI_IMAGE_BASE_URL}${redirectionUrl.replace(/\s+/g, '')}${result}${adParams}`;
-
-      sendFacebookPixelEvent(FacebookPixelEvent.Lead, { content_name: media.title });
-      redirectToExternalDomain({ href: finalRedirectionUrl, target });
+      if (isAuthenticated) {
+        addGeneration({
+          prompt: finalPrompt,
+          resultUrl,
+          sourceUrl: uploadedMedia[0]?.sourceUrl ?? null,
+        });
+      }
     } catch (error) {
       console.error('Error in onGenerate:', error);
-      // TODO: add error handling with toast
+      getAppStore().setResultUrl(null);
     } finally {
       setIsLoading(false);
+      getAppStore().setIsGenerating(false);
     }
   };
 
