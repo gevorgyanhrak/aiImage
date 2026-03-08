@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { LogIn, Moon, Sun } from 'lucide-react';
 
@@ -7,17 +8,20 @@ import { TEST_IDS } from './constants/testIds';
 import { PULSE_NAMES } from '@/constants/pulseNames';
 import { useAppStore } from '@/store/store';
 import UserPopup from '@/components/UserPopup';
+import LoginModal from '@/components/LoginModal';
 
 type HeaderProps = {
   children?: ReactNode;
 };
 
 const Header = ({ children }: HeaderProps) => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const isAuthenticated = useAppStore(s => s.isAuthenticated);
   const theme = useAppStore(s => s.theme);
   const setTheme = useAppStore(s => s.setTheme);
 
   return (
+    <>
     <header
       className="sticky top-0 z-50 bg-[var(--header-bg)] glow-line"
       data-testid={TEST_IDS.CONTAINER}
@@ -61,17 +65,20 @@ const Header = ({ children }: HeaderProps) => {
           {isAuthenticated ? (
             <UserPopup />
           ) : (
-            <Link
-              to="/login"
+            <button
+              type="button"
+              onClick={() => setShowLoginModal(true)}
               className="flex items-center gap-1.5 rounded-lg border border-[var(--surface-border-strong)] bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] transition-colors"
             >
               <LogIn className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Sign in</span>
-            </Link>
+            </button>
           )}
         </div>
       </div>
     </header>
+    <LoginModal open={showLoginModal} onClose={() => setShowLoginModal(false)} />
+    </>
   );
 };
 

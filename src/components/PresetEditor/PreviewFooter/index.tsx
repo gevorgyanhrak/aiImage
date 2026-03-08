@@ -4,6 +4,7 @@ import { Flex } from '@radix-ui/themes';
 
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/store';
+import LoginModal from '@/components/LoginModal';
 import postJson from '@/utils/postJson';
 import { AI_IMAGE_BASE_URL } from '@/constants/globals';
 import redirectToExternalDomain from '@/utils/redirectToExternalDomain';
@@ -70,6 +71,8 @@ const selector = (state: IPreviewState, ids: string[]) => ({
 
 const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prompt, textItemsData, ids, media, transformations, category, scrollOnEmptyInput }: IPreviewFooter) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const isAuthenticated = useAppStore(s => s.isAuthenticated);
   const { textItems, selectedPreviews } = useAppStore(state => selector(state, ids));
 
   const uploadedCount = selectedPreviews.map(preview => preview?.mediaUrl).filter(Boolean).length;
@@ -80,6 +83,11 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
   const onGenerate = async () => {
     if (disabled) {
       scrollOnEmptyInput();
+      return;
+    }
+
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
       return;
     }
 
@@ -155,24 +163,27 @@ const PreviewFooter = ({ id, primaryActionTitle, ariaLabel, redirectionUrl, prom
   };
 
   return (
-    <Flex className="items-center justify-center flex-col gap-4" data-testid={TEST_IDS.FOOTER}>
-      <Button
-        isLoading={isLoading}
-        aria-label={ariaLabel}
-        id={String(id)}
-        onClick={onGenerate}
-        aria-disabled={disabled}
-        className={cn(
-          'detail-generate-btn w-full h-12 rounded-xl gap-3 justify-center border-0',
-          disabled && 'opacity-35 pointer-events-none',
-        )}
-        data-testid={TEST_IDS.GENERATE_BUTTON}
-        data-pulse-name={PULSE_NAMES.GENERATE}
-      >
-        <Sparkles className="h-5 w-5 text-white" />
-        <span className="text-[15px] leading-[24px] font-semibold text-white">{primaryActionTitle}</span>
-      </Button>
-    </Flex>
+    <>
+      <Flex className="items-center justify-center flex-col gap-4" data-testid={TEST_IDS.FOOTER}>
+        <Button
+          isLoading={isLoading}
+          aria-label={ariaLabel}
+          id={String(id)}
+          onClick={onGenerate}
+          aria-disabled={disabled}
+          className={cn(
+            'detail-generate-btn w-full h-12 rounded-xl gap-3 justify-center border-0',
+            disabled && 'opacity-35 pointer-events-none',
+          )}
+          data-testid={TEST_IDS.GENERATE_BUTTON}
+          data-pulse-name={PULSE_NAMES.GENERATE}
+        >
+          <Sparkles className="h-5 w-5 text-white" />
+          <span className="text-[15px] leading-[24px] font-semibold text-white">{primaryActionTitle}</span>
+        </Button>
+      </Flex>
+      <LoginModal open={showLoginModal} onClose={() => setShowLoginModal(false)} />
+    </>
   );
 };
 
