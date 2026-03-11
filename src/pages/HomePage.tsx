@@ -15,6 +15,11 @@ import HowItWorks from '@/components/HowItWorks';
 import FilterExplorer from '@/components/FilterExplorer';
 import PromoBanner from '@/components/PromoBanner';
 import ToolsShowcase from '@/components/ToolsShowcase';
+import TrendingEffects from '@/components/TrendingEffects';
+import CreatorApps from '@/components/CreatorApps';
+import ContestBanner from '@/components/ContestBanner';
+import StylePresets from '@/components/StylePresets';
+import CommunityShowcase from '@/components/CommunityShowcase';
 
 import type { TabItem } from '@/types/tabs';
 
@@ -49,6 +54,9 @@ const HomePage = () => {
           {/* Tools showcase — right after hero */}
           <ToolsShowcase />
 
+          {/* Trending effects — tabbed grid */}
+          <TrendingEffects />
+
           {/* CMS sections interleaved with custom components */}
           {pageData.components.map((componentData, index) => {
             const Component = componentsMap[componentData.__component];
@@ -60,17 +68,29 @@ const HomePage = () => {
                 {/* After 1st CMS section: What's New */}
                 {index === 0 && <NewFeatures />}
 
-                {/* After 2nd CMS section: Promo banner */}
-                {index === 1 && <PromoBanner />}
+                {/* After 2nd CMS section: Creator Apps carousel */}
+                {index === 1 && <CreatorApps />}
 
-                {/* After 3rd CMS section: Popular filters */}
-                {index === 2 && <PopularFilters />}
+                {/* After 3rd CMS section: Promo banner */}
+                {index === 2 && <PromoBanner />}
 
-                {/* After 5th CMS section: How It Works */}
-                {index === 4 && <HowItWorks />}
+                {/* After 4th CMS section: Popular filters */}
+                {index === 3 && <PopularFilters />}
+
+                {/* After 5th CMS section: Style Presets */}
+                {index === 4 && <StylePresets />}
+
+                {/* After 6th CMS section: How It Works */}
+                {index === 5 && <HowItWorks />}
               </div>
             );
           })}
+
+          {/* Contest banner */}
+          <ContestBanner />
+
+          {/* Community showcase gallery */}
+          <CommunityShowcase />
 
           {/* Filter Explorer — at the bottom */}
           <FilterExplorer />
