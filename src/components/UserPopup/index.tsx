@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Coins, User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Coins, User, Settings, LogOut, ChevronDown, Bookmark } from 'lucide-react';
 import { useAppStore } from '@/store/store';
 import { cn } from '@/lib/utils';
 
 const UserPopup = () => {
   const user = useAppStore(s => s.user);
   const logout = useAppStore(s => s.logout);
+  const wishlist = useAppStore(s => s.wishlist);
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -114,6 +115,21 @@ const UserPopup = () => {
           >
             <User className="h-4 w-4" />
             Your Profile
+          </Link>
+          <Link
+            to="/wishlist"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm text-[var(--page-text-secondary)] hover:text-[var(--page-text)] hover:bg-[var(--surface)] transition-colors"
+          >
+            <span className="flex items-center gap-2.5">
+              <Bookmark className="h-4 w-4" />
+              Wishlist
+            </span>
+            {wishlist.length > 0 && (
+              <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-400/15 px-1.5 text-[10px] font-bold text-amber-400">
+                {wishlist.length}
+              </span>
+            )}
           </Link>
           <Link
             to="/settings"

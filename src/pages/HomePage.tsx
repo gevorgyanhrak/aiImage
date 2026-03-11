@@ -9,6 +9,10 @@ import PageJsonLinkedData from '@/components/PageJsonLinkedData';
 import { SITE_NAME } from '@/constants/seo';
 import HeroBanner from '@/components/HeroBanner';
 import QuickGenerate from '@/components/QuickGenerate';
+import NewFeatures from '@/components/NewFeatures';
+import PopularFilters from '@/components/PopularFilters';
+import HowItWorks from '@/components/HowItWorks';
+import FilterExplorer from '@/components/FilterExplorer';
 
 import type { TabItem } from '@/types/tabs';
 
@@ -36,14 +40,27 @@ const HomePage = () => {
       </Header>
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
       <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)]">
-        <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-6">
+        <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-8 md:gap-10">
           <HeroBanner />
 
+          {/* What's New — horizontal scroll of latest additions */}
+          <NewFeatures />
+
+          {/* How It Works — 3-step guide */}
+          <HowItWorks />
+
+          {/* Popular This Week — trending filters with stats & favorites */}
+          <PopularFilters />
+
+          {/* Existing dynamic sections from CMS */}
           {pageData.components.map((componentData, index) => {
             const Component = componentsMap[componentData.__component];
             if (!Component) return null;
             return <Component {...componentData} priority={index === 0} key={componentData.id} searchParams={queryParams} />;
           })}
+
+          {/* Filter Explorer — interactive browser with search, tabs, favorites */}
+          <FilterExplorer />
         </div>
       </main>
 

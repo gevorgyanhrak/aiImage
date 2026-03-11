@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import SettingsPage from './pages/SettingsPage';
+import WishlistPage from './pages/WishlistPage';
 
 const App = () => (
   <Providers>
@@ -17,6 +18,7 @@ const App = () => (
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/wishlist" element={<WishlistPage />} />
       <Route path="/:category" element={<CategoryPage />} />
       <Route path="/:category/:id" element={<DetailPage />} />
     </Routes>

@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { Theme } from '@radix-ui/themes';
-import { Download, RotateCcw, Sparkles } from 'lucide-react';
+import { Download, RotateCcw, Sparkles, Heart, Bookmark } from 'lucide-react';
 
 import Header from '@/components/Header';
 import Media from '@/components/Media';
@@ -25,9 +25,17 @@ import { useAppStore, getAppStore } from '@/store/store';
 import type { Media as MediaPropsType, VideoMedia } from '@/types/media';
 import type { SectionItemWithFlow } from '@/types/sectionItem';
 
+import LoginModal from '@/components/LoginModal';
+import { cn } from '@/lib/utils';
+
 import '@/styles/radix-theme.css';
 import '@/styles/skeleton.css';
 import '@/styles/preset.css';
+
+function formatLikeCount(n: number): string {
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+  return String(n);
+}
 
 const DetailPage = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
@@ -35,6 +43,13 @@ const DetailPage = () => {
   const queryParams = Object.fromEntries(searchParams.entries());
   const resultUrl = useAppStore(s => s.resultUrl);
   const isGenerating = useAppStore(s => s.isGenerating);
+  const isAuthenticated = useAppStore(s => s.isAuthenticated);
+  const likedByUser = useAppStore(s => s.likedByUser);
+  const likes = useAppStore(s => s.likes);
+  const toggleLike = useAppStore(s => s.toggleLike);
+  const wishlist = useAppStore(s => s.wishlist);
+  const toggleWishlist = useAppStore(s => s.toggleWishlist);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Clear result when navigating to a different page
   useEffect(() => {
@@ -177,6 +192,62 @@ const DetailPage = () => {
               {/* Title & description */}
               <PresetHero title={title} description={description} />
 
+              {/* Like + Wishlist actions */}
+              {(() => {
+                const slug = id;
+                const isLiked = likedByUser.includes(slug);
+                const likeCount = likes[slug] ?? 0;
+                const isWishlisted = wishlist.includes(slug);
+
+                return (
+                  <div className="flex items-center gap-3">
+                    {/* Like button */}
+                    <button
+                      type="button"
+                      onClick={() => toggleLike(slug)}
+                      className={cn(
+                        'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 border',
+                        isLiked
+                          ? 'border-[var(--neon-pink)]/30 bg-[var(--neon-pink)]/10 text-[var(--neon-pink)]'
+                          : 'border-[var(--surface-border-strong)] bg-[var(--surface)] text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--page-text)]',
+                      )}
+                    >
+                      <Heart
+                        className={cn('h-[18px] w-[18px] transition-transform duration-200', isLiked && 'scale-110')}
+                        fill={isLiked ? 'currentColor' : 'none'}
+                        strokeWidth={isLiked ? 0 : 2}
+                      />
+                      <span>{formatLikeCount(likeCount)}</span>
+                    </button>
+
+                    {/* Wishlist button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          setShowLoginModal(true);
+                          return;
+                        }
+                        toggleWishlist(slug);
+                      }}
+                      className={cn(
+                        'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 border',
+                        isWishlisted
+                          ? 'border-amber-400/30 bg-amber-400/10 text-amber-400'
+                          : 'border-[var(--surface-border-strong)] bg-[var(--surface)] text-[var(--page-text-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--page-text)]',
+                      )}
+                    >
+                      <Bookmark
+                        className={cn('h-[18px] w-[18px] transition-transform duration-200', isWishlisted && 'scale-110')}
+                        fill={isWishlisted ? 'currentColor' : 'none'}
+                        strokeWidth={isWishlisted ? 0 : 2}
+                      />
+                      <span>{isWishlisted ? 'Saved' : 'Save'}</span>
+                    </button>
+                  </div>
+                );
+              })()}
+
               <div className="detail-separator" />
 
               {/* Upload areas & text inputs */}
@@ -261,6 +332,7 @@ const DetailPage = () => {
           <SimilarPresets documentId={documentId} landingType={landingType} category={category} />
         </div>
       </main>
+      <LoginModal open={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </Theme>
   );
 };
