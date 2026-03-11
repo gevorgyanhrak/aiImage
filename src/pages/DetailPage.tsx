@@ -204,7 +204,13 @@ const DetailPage = () => {
                     {/* Like button */}
                     <button
                       type="button"
-                      onClick={() => toggleLike(slug)}
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          setShowLoginModal(true);
+                          return;
+                        }
+                        toggleLike(slug);
+                      }}
                       className={cn(
                         'flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 border',
                         isLiked

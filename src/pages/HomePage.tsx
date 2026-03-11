@@ -7,12 +7,14 @@ import { getHubByDocumentId } from '@/lib/strapi/hubs';
 import { HUB_DOCUMENT_ID } from '@/constants/globals';
 import PageJsonLinkedData from '@/components/PageJsonLinkedData';
 import { SITE_NAME } from '@/constants/seo';
-import HeroBanner from '@/components/HeroBanner';
+import FeaturedCarousel from '@/components/FeaturedCarousel';
 import QuickGenerate from '@/components/QuickGenerate';
 import NewFeatures from '@/components/NewFeatures';
 import PopularFilters from '@/components/PopularFilters';
 import HowItWorks from '@/components/HowItWorks';
 import FilterExplorer from '@/components/FilterExplorer';
+import PromoBanner from '@/components/PromoBanner';
+import ToolsShowcase from '@/components/ToolsShowcase';
 
 import type { TabItem } from '@/types/tabs';
 
@@ -41,25 +43,36 @@ const HomePage = () => {
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
       <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)]">
         <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-8 md:gap-10">
-          <HeroBanner />
+          {/* Featured carousel — top filters */}
+          <FeaturedCarousel />
 
-          {/* What's New — horizontal scroll of latest additions */}
-          <NewFeatures />
+          {/* Tools showcase — right after hero */}
+          <ToolsShowcase />
 
-          {/* How It Works — 3-step guide */}
-          <HowItWorks />
-
-          {/* Popular This Week — trending filters with stats & favorites */}
-          <PopularFilters />
-
-          {/* Existing dynamic sections from CMS */}
+          {/* CMS sections interleaved with custom components */}
           {pageData.components.map((componentData, index) => {
             const Component = componentsMap[componentData.__component];
             if (!Component) return null;
-            return <Component {...componentData} priority={index === 0} key={componentData.id} searchParams={queryParams} />;
+            return (
+              <div key={componentData.id} className="contents">
+                <Component {...componentData} priority={index === 0} searchParams={queryParams} />
+
+                {/* After 1st CMS section: What's New */}
+                {index === 0 && <NewFeatures />}
+
+                {/* After 2nd CMS section: Promo banner */}
+                {index === 1 && <PromoBanner />}
+
+                {/* After 3rd CMS section: Popular filters */}
+                {index === 2 && <PopularFilters />}
+
+                {/* After 5th CMS section: How It Works */}
+                {index === 4 && <HowItWorks />}
+              </div>
+            );
           })}
 
-          {/* Filter Explorer — interactive browser with search, tabs, favorites */}
+          {/* Filter Explorer — at the bottom */}
           <FilterExplorer />
         </div>
       </main>

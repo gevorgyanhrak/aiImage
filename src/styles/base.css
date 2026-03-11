@@ -463,4 +463,10 @@ html {
   .hero-download-hint {
     animation: hero-download-hint 4s ease-out infinite;
   }
+
+  /* Video card progress bar */
+  @keyframes progress {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
 }
