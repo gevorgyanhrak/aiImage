@@ -95,7 +95,7 @@ const Header = ({ children }: HeaderProps) => {
             className="flex items-baseline gap-2.5 shrink-0 group"
           >
             <span className="text-base md:text-lg font-bold tracking-[0.15em] uppercase neon-text neon-pulse">
-              hrakAi
+              Narek&Hrak
             </span>
             <span className="text-[10px] font-medium tracking-[0.3em] uppercase text-[var(--page-text-muted)] group-hover:text-[var(--page-text-secondary)] transition-colors duration-300 hidden sm:inline">
               studio
