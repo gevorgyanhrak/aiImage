@@ -36,6 +36,11 @@ const NAV_LINKS = [
   { label: 'Face & Body', href: '/face-body', icon: SmilePlus },
 ];
 
+// Maps subcategory slugs to their parent nav link href
+const CATEGORY_ALIAS: Record<string, string> = {
+  trending: '/ai-effects',
+};
+
 const Header = ({ children }: HeaderProps) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -102,7 +107,9 @@ const Header = ({ children }: HeaderProps) => {
             {children || (
               <ul className="flex items-center gap-1">
                 {NAV_LINKS.map(({ label, href, icon: Icon }) => {
-                  const isActive = pathname === href || pathname.startsWith(href + '/');
+                  const segment = pathname.split('/')[1] ?? '';
+                  const mapped = CATEGORY_ALIAS[segment];
+                  const isActive = pathname === href || pathname.startsWith(href + '/') || mapped === href;
                   return (
                     <li key={href} className="list-none shrink-0">
                       <Link
@@ -179,7 +186,9 @@ const Header = ({ children }: HeaderProps) => {
             ) : (
               <ul className="grid grid-cols-2 gap-2">
                 {NAV_LINKS.map(({ label, href, icon: Icon }) => {
-                  const isActive = pathname === href || pathname.startsWith(href + '/');
+                  const segment = pathname.split('/')[1] ?? '';
+                  const mapped = CATEGORY_ALIAS[segment];
+                  const isActive = pathname === href || pathname.startsWith(href + '/') || mapped === href;
                   return (
                     <li key={href} className="list-none">
                       <Link

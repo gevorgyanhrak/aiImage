@@ -42,9 +42,10 @@ const HomePage = () => {
         <title>{pageData.seoSettings?.title || SITE_NAME}</title>
         {pageData.seoSettings?.metaDescription && <meta name="description" content={pageData.seoSettings.metaDescription} />}
       </Helmet>
-      <Header>
+      <Header />
+      <div className="sticky top-14 md:top-16 z-40 bg-[var(--header-bg)] border-b border-[var(--surface-border)] px-4 md:px-6">
         <Tabs items={tabItems} />
-      </Header>
+      </div>
       <PageJsonLinkedData softwareApplicationPayload={{ seoSettings: pageData.seoSettings }} webSitePayload={{ seoSettings: pageData.seoSettings }} />
       <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)]">
         <div className="px-3 md:px-6 py-4 md:py-6 pb-16 flex flex-col gap-8 md:gap-10">
