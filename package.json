@@ -11,7 +11,7 @@
     "lint": "eslint 'src/**/*.{js,ts,tsx,jsx}' --quiet",
     "lint-fix": "eslint 'src/**/*.{js,ts,tsx,jsx}' --quiet --fix",
     "check:ts": "tsc --noEmit",
-    "prepare": "is-ci || husky install || true",
+    "prepare": "node -e \"if(process.env.CI||process.env.VERCEL)process.exit(0);process.exit(1)\" || husky install || true",
     "commit": "git cz --hook",
     "lint-staged": "lint-staged"
   },
