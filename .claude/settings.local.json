@@ -15,7 +15,10 @@
       "Bash(/tmp/analysis.md:*)",
       "Read(//tmp/**)",
       "WebFetch(domain:gist.github.com)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "WebFetch(domain:enter.pollinations.ai)",
+      "WebFetch(domain:www.pixazo.ai)",
+      "WebFetch(domain:docs.together.ai)"
     ]
   }
 }

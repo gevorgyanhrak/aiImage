@@ -7,5 +7,6 @@ export const TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN;
 export const HUB_DOCUMENT_ID = import.meta.env.VITE_HUB_DOCUMENT_ID;
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
+export const HF_API_KEY = import.meta.env.VITE_HF_API_KEY || '';
 export const APP_ENV = import.meta.env.MODE;
 export const IS_CACHE_ENABLED = import.meta.env.VITE_CACHE_ENABLED === 'true';
